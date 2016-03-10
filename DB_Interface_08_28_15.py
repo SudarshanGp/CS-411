@@ -33,7 +33,7 @@ def writeAcademicCollege(conn, data_list):
 def writeGender(conn, data_list):
     c= conn.cursor()
     conn.execute('pragma foreign_keys=ON')
-    cmd_text = """insert into Gender values (?,?,?)"""
+    cmd_text = """insert into Gender values (?,?,?,?)"""
     c.executemany(cmd_text, data_list)
     conn.commit()
     c.close()

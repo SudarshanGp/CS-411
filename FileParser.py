@@ -44,8 +44,9 @@ def Gender(fileloc):
     ReturnList=[]
     wb=xlrd.open_workbook(fileloc)
     current_sheet=wb.sheet_by_index(0)
-    for i in range(31, 32): #starts at row 5 
-        Gender=Gender+[current_sheet.cell(i,5).value]
+    for i in range(30, 34): #starts at row 5
+        if i!=32: #we don't want the blank
+            Gender=Gender+[current_sheet.cell(i,5).value]
     Gender.insert(0,str(sys.argv[1][0:4]))
     ReturnList.append(Gender)
     return ReturnList
