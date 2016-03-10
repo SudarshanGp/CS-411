@@ -292,103 +292,99 @@ def buildOutputDatabase(db_name):
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
 
-    c.execute(''' CREATE TABLE ShortestAvgShelterWeatherData (
-    ShelterInstanceId CHAR(30) not null,
-    ECUInstanceId CHAR(30) not null,
-    timestamp DATETIME not null,
-    avgInterval int not null,
-    avgInteriorAirTemp FLOAT not null, --in F
-    avgECUPower FLOAT not null, --in kW
-    avgPlugLoad FLOAT not null, -- in kW
-    ambientAirTemp FLOAT not null, --in F
-    globalHorizontalSolar FLOAT not null, --in W/m2
-    relativeHumidity FLOAT not null, --in percent
-    windSpeed FLOAT not null, --in mph
-    primary key (ShelterInstanceId, EcuInstanceId, timestamp, avgInterval)
+    c.execute(''' CREATE TABLE AcademicCollege (
+    Year VARCHAR(8) not null,
+    AgConsEnvSci INT not null,
+    ApHealthSci INT not null,
+    Business INT not null,
+    Edu INT not null,
+    Eng INT not null, 
+    Art INT not null,
+    GenStud INT not null,
+    Las INT not null,
+    Media INT not null,
+    SocWork INT not null,
+    Total INT not null,
+
+    primary key (Year)
     )''')
 
-    c.execute(''' CREATE TABLE AveragedShelterWeatherData (
-    ShelterInstanceId CHAR(30) not null,
-    ECUInstanceId CHAR(30) not null,
-    timestamp DATETIME not null,
-    avgInterval int not null,
-    avgInteriorAirTemp FLOAT not null, --in F
-    avgECUPower FLOAT not null, --in kW
-    avgPlugLoad FLOAT not null, -- in kW
-    ambientAirTemp FLOAT not null, --in F
-    globalHorizontalSolar FLOAT not null, --in W/m2
-    relativeHumidity FLOAT not null, --in percent
-    windSpeed FLOAT not null, --in mph
-    primary key (ShelterInstanceId, EcuInstanceId, timestamp, avgInterval)
+    c.execute(''' CREATE TABLE Ethnicity (
+    Year VARCHAR(8) not null,
+    AfAm INT not null,
+    Asian INT not null,
+    Hisp INT not null,
+    Multi INT not null,
+    NativeAmAl INT not null,
+    White INT not null,
+    Foreign INT not null,
+    Unknown INT not null,
+    Total INT not null,
+
+    primary key (Year)
     )''')
 
-    c.execute(''' CREATE TABLE ExcerptedShelterWeatherData (
-    ShelterInstanceId CHAR(30) not null,
-    ECUInstanceId CHAR(30) not null,
-    timestamp DATETIME not null,
-    avgInterval int not null,
-    avgInteriorAirTemp FLOAT not null, --in F
-    avgECUPower FLOAT not null, --in kW
-    avgPlugLoad FLOAT not null, -- in kW
-    ambientAirTemp FLOAT not null, --in F
-    globalHorizontalSolar FLOAT not null, --in W/m2
-    relativeHumidity FLOAT not null, --in percent
-    windSpeed FLOAT not null, --in mph
-    primary key (ShelterInstanceId, EcuInstanceId, timestamp, avgInterval)
+    c.execute(''' CREATE TABLE Gender (
+    Year VARCHAR(8) not null,
+    Male INT not null,
+    Female INT not null,
+    Total INT not null,
+
+    primary key (Year)
     )''')
 
-    c.execute(''' CREATE TABLE ShelterWeatherDataWithModel (
-    ShelterInstanceId CHAR(30) not null,
-    ECUInstanceId CHAR(30) not null,
-    timestamp DATETIME not null,
-    avgInterval int not null,
-    avgInteriorAirTemp FLOAT not null, --in F
-    avgECUPower FLOAT not null, --in kW
-    avgPlugLoad FLOAT not null, -- in kW
-    ambientAirTemp FLOAT not null, --in F
-    globalHorizontalSolar FLOAT not null, --in W/m2
-    relativeHumidity FLOAT not null, --in percent
-    windSpeed FLOAT not null, --in mph
-    paramsID INT not null,
-    QCalc FLOAT not null,
-    PwrCalc FLOAT not null,
-    primary key (ShelterInstanceId, EcuInstanceId, timestamp, avgInterval, paramsID)
-    )''')
-
-    c.execute(''' CREATE TABLE ShelterWeatherDataWithBESTModel (
-    ShelterInstanceId CHAR(30) not null,
-    ECUInstanceId CHAR(30) not null,
-    timestamp DATETIME not null,
-    avgInterval int not null,
-    avgInteriorAirTemp FLOAT not null, --in F
-    avgECUPower FLOAT not null, --in kW
-    avgPlugLoad FLOAT not null, -- in kW
-    ambientAirTemp FLOAT not null, --in F
-    globalHorizontalSolar FLOAT not null, --in W/m2
-    relativeHumidity FLOAT not null, --in percent
-    windSpeed FLOAT not null, --in mph
-    paramsID INT not null,
-    QCalc FLOAT not null,
-    PwrCalc FLOAT not null,
-    primary key (ShelterInstanceId, EcuInstanceId, timestamp, avgInterval, paramsID)
-    )''')
-
-    c.execute(''' CREATE TABLE ParametersInfo (
-    paramsID INT not null,
-    LUMPED_HEAT_TRANSFER_COEFFICIENT FLOAT not null,
-    LUMPED_SOLAR_COEFFICIENT FLOAT not null,
-    MAX_Q_HEAT FLOAT not null,
-    HIHEAT FLOAT not null,
-    MAX_Q_COOL FLOAT not null,
-    HICOOL FLOAT not null,
-    LOW_Q_HEAT FLOAT not null,
-    LOWHEAT FLOAT not null,
-    LOW_Q_COOL FLOAT not null,
-    LOWCOOL FLOAT not null,
-    RMSE FLOAT not null,
-    TOTAL_ERROR FLOAT not null,
-    COMBINED_OBJ_FCN FLOAT not null,
-    primary key (paramsID)
+    c.execute(''' CREATE TABLE State (
+    Year VARCHAR(8) not null,
+    Alabama INT not null,
+    Alaska INT not null,
+    Arizona INT not null,
+    Arkansas INT not null,
+    CA INT not null,
+    Colorado INT not null,
+    Connecticut INT not null,
+    Delaware INT not null,
+    DC INT not null,
+    FL INT not null,
+    GA INT not null,
+    Idaho INT not null,
+    IL INT not null,
+    IN INT not null,
+    Iowa INT not null,
+    Kansas INT not null,
+    Kentucky INT not null,
+    Louisiana INT not null,
+    Maryland INT not null,
+    Massachusetts INT not null,
+    Michigan INT not null,
+    Minnesota INT not null,
+    Mississippi INT not null,
+    Missouri INT not null,
+    Nebraska INT not null,
+    Nevada INT not null,
+    NH INT not null,
+    NJ INT not null,
+    NM INT not null,
+    NY INT not null,
+    NC INT not null,
+    Ohio INT not null,
+    Oregon INT not null,
+    PA INT not null,
+    PR INT not null,
+    RI INT not null,
+    SC INT not null,
+    SD INT not null,
+    Tennessee INT not null,
+    Texas INT not null,
+    Utah INT not null,
+    Virginia INT not null,
+    WA INT not null,
+    WI INT not null,
+    Military INT not null,
+    Other Countries INT not null,
+    Unknown INT not null,
+    Total INT not null,
+    
+    primary key (Year)
     )''')
 
     conn.commit()
