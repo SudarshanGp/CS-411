@@ -37,8 +37,20 @@ def AcademicCollege(fileloc):
     ReturnList.append(AcademicCollege)
     return ReturnList
     
-def FreshmanParser():
-    """Imports Dent B-Hut data at CBITEC"""
+def Gender(fileloc):
+    
+    
+    Gender=[]
+    ReturnList=[]
+    wb=xlrd.open_workbook(fileloc)
+    current_sheet=wb.sheet_by_index(0)
+    for i in range(31, 32): #starts at row 5 
+        Gender=Gender+[current_sheet.cell(i,5).value]
+    Gender.insert(0,str(sys.argv[1][0:4]))
+    ReturnList.append(Gender)
+    return ReturnList
+
+def AcademicParser():
     fileloc=CurrentDir+"FreshmanData\\"+str(sys.argv[1])
     AcademicCollegeList=AcademicCollege(fileloc)
     print AcademicCollegeList
@@ -50,14 +62,25 @@ def FreshmanParser():
 
     return AcademicCollegeList
 
+def GenderParser():
+    fileloc=CurrentDir+"FreshmanData\\"+str(sys.argv[1])
+    GenderList=Gender(fileloc)
+    print GenderList
+    buildOutputDatabase(db_name)
+    conn = sqlite3.connect(db_name)
+    writeGender(conn, GenderList)
+    conn.commit()
+    conn.close()
+
+    return GenderList
 
 def length(i):
     """returns the length of i"""
     return len(str(i))
 
 def main():
-    #-----Goes through the B-Hut datasets and seperates into three lists
-    AcademicCollege=FreshmanParser()
+    AcademicCollege=AcademicParser()
+    Gender=GenderParser()
    
    
 if __name__ == '__main__':

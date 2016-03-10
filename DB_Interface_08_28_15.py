@@ -22,35 +22,18 @@ def writeDataSetInfo(conn, data_set_info):
     conn.commit()
     c.close()
 
-def writeECUInstanceInfo(conn, data_list):
-    c= conn.cursor()
-    #conn.execute('pragma foreign_keys=ON')
-    cmd_text = """insert into ECUInstanceInfo values (?,?,?,?)"""
-    c.executemany(cmd_text, data_list)
-    conn.commit()
-    c.close()
-
-
-def writeECUData(conn, data_list):
-    c= conn.cursor()
-    conn.execute('pragma foreign_keys=ON')
-    cmd_text = """insert into ECUData values (?,?,?,?,?,?,?,?,?)"""
-    c.executemany(cmd_text, data_list)
-    conn.commit()
-    c.close()
-
-  
-def writeShelterWeatherData(conn, data_list):
-    c= conn.cursor()
-    conn.execute('pragma foreign_keys=ON')
-    cmd_text = """insert into AcademicCollege values (?,?,?,?,?,?,?,?,?,?,?,?)"""
-    c.executemany(cmd_text, data_list)
-    conn.commit()
-    c.close()
 def writeAcademicCollege(conn, data_list):
     c= conn.cursor()
     conn.execute('pragma foreign_keys=ON')
     cmd_text = """insert into AcademicCollege values (?,?,?,?,?,?,?,?,?,?,?,?)"""
+    c.executemany(cmd_text, data_list)
+    conn.commit()
+    c.close()
+
+def writeGender(conn, data_list):
+    c= conn.cursor()
+    conn.execute('pragma foreign_keys=ON')
+    cmd_text = """insert into Gender values (?,?,?)"""
     c.executemany(cmd_text, data_list)
     conn.commit()
     c.close()
