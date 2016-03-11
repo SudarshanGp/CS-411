@@ -18,10 +18,11 @@ import sys
 import os
 
 db_name = 'Demo.db'
-CurrentDir= "C:\\Users\\Nathan\\Desktop\\"
+CurrentDir= "/Users/Aadhya/Github/CS-411/"
+# /Users/Aadhya/GitHub
 
 from HVAC_DB_Schema_Constants import *
-from DB_Interface_08_28_15 import *
+from DB_Interface2 import *
 
 
 def AcademicCollege(fileloc):
@@ -64,19 +65,23 @@ def State(fileloc):
     ReturnList=[]
     wb=xlrd.open_workbook(fileloc)
     current_sheet=wb.sheet_by_index(0)
-    for i in range(5, 45): 
+    for i in range(5, 45):
+        #print i
+        #print str(i) + str(current_sheet.cell(i,9).value) 
         State=State+[current_sheet.cell(i,9).value]
 
-    for i in range(5, 30): 
-        if i<19 or i==29:
+    for i in range(5, 30):
+        if i<20 or i==29:
+            #print str(i) + str(current_sheet.cell(i,13).value)
             State=State+[current_sheet.cell(i,13).value]
-
+    #print State
     State.insert(0,str(sys.argv[1][0:4]))
+    print len(State)
     ReturnList.append(State)
     return ReturnList
 
 def AcademicParser():
-    fileloc=CurrentDir+"FreshmanData\\"+str(sys.argv[1])
+    fileloc=CurrentDir+str(sys.argv[1])
     AcademicCollegeList=AcademicCollege(fileloc)
     print AcademicCollegeList
     buildOutputDatabase(db_name)
@@ -88,7 +93,7 @@ def AcademicParser():
     return AcademicCollegeList
 
 def GenderParser():
-    fileloc=CurrentDir+"FreshmanData\\"+str(sys.argv[1])
+    fileloc=CurrentDir+str(sys.argv[1])
     GenderList=Gender(fileloc)
     print GenderList
     buildOutputDatabase(db_name)
@@ -100,11 +105,12 @@ def GenderParser():
     return GenderList
 
 def EthnicityParser():
-    fileloc=CurrentDir+"FreshmanData\\"+str(sys.argv[1])
+    fileloc=CurrentDir+str(sys.argv[1])
     EthnicityList=Ethnicity(fileloc)
     print EthnicityList
     buildOutputDatabase(db_name)
     conn = sqlite3.connect(db_name)
+
     writeEthnicity(conn, EthnicityList)
     conn.commit()
     conn.close()
@@ -112,7 +118,7 @@ def EthnicityParser():
     return EthnicityList
 
 def StateParser():
-    fileloc=CurrentDir+"FreshmanData\\"+str(sys.argv[1])
+    fileloc=CurrentDir+str(sys.argv[1])
     StateList=State(fileloc)
     print StateList
     buildOutputDatabase(db_name)

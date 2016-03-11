@@ -14,7 +14,7 @@ def writeAcademicCollege(conn, data_list):
 def writeEthnicity(conn, data_list):
     c= conn.cursor()
     conn.execute('pragma foreign_keys=ON')
-    cmd_text = """insert into Ethnicity values (?,?,?,?,?,?,?,?,?,?)"""
+    cmd_text = """insert into Ethnicity values (?,?,?,?,?,?,?,?,?,?,?)"""
     c.executemany(cmd_text, data_list)
     conn.commit()
     c.close()
@@ -67,6 +67,7 @@ def buildOutputDatabase(db_name):
     Hisp int not null,
     Multi int not null,
     NativeAmAl int not null,
+    NativeHaw int not null,
     White int not null,
     Foreigner int not null,
     Unknown int not null,
