@@ -9,10 +9,9 @@ import sys  #getting sys arguments
 import os #for getting cwd
 
 db_name = 'Demo.db'
-CurrentDir= os.getcwd()+"\\"
+CurrentDir= os.getcwd()+"/data/"
 # /Users/Aadhya/GitHub
 
-from HVAC_DB_Schema_Constants import *
 from DB_Interface2 import *
 
 
