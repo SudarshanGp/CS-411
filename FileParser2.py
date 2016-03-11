@@ -1,24 +1,15 @@
 __author__ = 'Nathan'
 #!/usr/bin/env python
 import timeit #test how long it takes
-import os #removing old database
-import math
-import random
 import sqlite3 #for the database
 import time #for dealing with time objects
 import xlrd #for reading .xlsx files
-import xlsxwriter
-from dateutil.parser import parse
 import csv #for readin .csv files
-from datetime import datetime, timedelta, time, date #for dealing with datetime objects
-from os import listdir
-from os.path import isfile, join
-from openpyxl import load_workbook
-import sys
-import os
+import sys  #getting sys arguments
+import os #for getting cwd
 
 db_name = 'Demo.db'
-CurrentDir= "/Users/Aadhya/Github/CS-411/"
+CurrentDir= os.getcwd()+"\\"
 # /Users/Aadhya/GitHub
 
 from HVAC_DB_Schema_Constants import *
@@ -66,25 +57,19 @@ def State(fileloc):
     wb=xlrd.open_workbook(fileloc)
     current_sheet=wb.sheet_by_index(0)
     for i in range(5, 45):
-        #print i
-        #print str(i) + str(current_sheet.cell(i,9).value) 
         State=State+[current_sheet.cell(i,9).value]
 
     for i in range(5, 30):
         if i<20 or i==29:
-            #print str(i) + str(current_sheet.cell(i,13).value)
             State=State+[current_sheet.cell(i,13).value]
-    #print State
+
     State.insert(0,str(sys.argv[1][0:4]))
-    print len(State)
     ReturnList.append(State)
     return ReturnList
 
 def AcademicParser():
     fileloc=CurrentDir+str(sys.argv[1])
     AcademicCollegeList=AcademicCollege(fileloc)
-    print AcademicCollegeList
-    buildOutputDatabase(db_name)
     conn = sqlite3.connect(db_name)
     writeAcademicCollege(conn, AcademicCollegeList)
     conn.commit()
@@ -95,8 +80,6 @@ def AcademicParser():
 def GenderParser():
     fileloc=CurrentDir+str(sys.argv[1])
     GenderList=Gender(fileloc)
-    print GenderList
-    buildOutputDatabase(db_name)
     conn = sqlite3.connect(db_name)
     writeGender(conn, GenderList)
     conn.commit()
@@ -107,10 +90,7 @@ def GenderParser():
 def EthnicityParser():
     fileloc=CurrentDir+str(sys.argv[1])
     EthnicityList=Ethnicity(fileloc)
-    print EthnicityList
-    buildOutputDatabase(db_name)
     conn = sqlite3.connect(db_name)
-
     writeEthnicity(conn, EthnicityList)
     conn.commit()
     conn.close()
@@ -120,8 +100,6 @@ def EthnicityParser():
 def StateParser():
     fileloc=CurrentDir+str(sys.argv[1])
     StateList=State(fileloc)
-    print StateList
-    buildOutputDatabase(db_name)
     conn = sqlite3.connect(db_name)
     writeState(conn, StateList)
     conn.commit()
@@ -134,6 +112,7 @@ def length(i):
     return len(str(i))
 
 def main():
+    buildOutputDatabase(db_name)
     AcademicCollege=AcademicParser()
     Gender=GenderParser()
     Ethnicity=EthnicityParser()
