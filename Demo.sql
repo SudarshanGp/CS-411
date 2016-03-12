@@ -1,5 +1,5 @@
--- DROP TABLE IF EXISTS AcademicCollege;
 CREATE DATABASE db;
+DROP TABLE IF EXISTS db.AcademicCollege;
 CREATE TABLE db.AcademicCollege (
     Year VARCHAR(8) not null,
     AgConsEnvSci int not null,
