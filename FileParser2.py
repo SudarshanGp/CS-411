@@ -66,6 +66,7 @@ def buildOutputSQL(file_name, db_name):
     DC int not null,
     FL int not null,
     GA int not null,
+    Guam int not null,
     Hawaii int not null,
     Idaho int not null,
     IL int not null,
@@ -163,7 +164,7 @@ def State(fileloc):
             State=State+[0]
 
     for i in range(5, 30):
-        if i<20 or i==29:
+        if i<21 or i==29:
             val = current_sheet.cell(i,13).value
             if val != '':
                 State=State+[int(val)]
