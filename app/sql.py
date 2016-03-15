@@ -7,19 +7,14 @@ import itertools
 db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', db = 'db')
 
 cursor = db.cursor()
-print(cursor)
+# print(cursor)
 # f = open('output.sql', 'r')
 # query = " ".join(f.readlines())
 # cursor.execute(query)
 # db.commit()
 cursor.execute("SELECT * FROM db.State")
-# recs = cursor.fetchall()
 desc = cursor.description
-# print(recs)
-# print(desc)
 column_names = [col[0] for col in desc]
-print(column_names)
-
 data = [dict(itertools.izip(column_names, row))
         for row in cursor.fetchall()]
 # rows = [ dict(rec) for rec in recs ]
