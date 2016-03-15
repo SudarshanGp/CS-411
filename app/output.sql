@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS db;
 CREATE DATABASE db;
 DROP TABLE IF EXISTS db.AcademicCollege;
 CREATE TABLE db.AcademicCollege (
@@ -26,7 +27,7 @@ CREATE TABLE db.Ethnicity (
     NativeHaw int not null,
     White int not null,
     Foreigner int not null,
-    Unknown int not null,
+    Unknown1 int not null,
     Total int not null,
     primary key (Year)
     );
@@ -95,8 +96,8 @@ CREATE TABLE db.State (
     WI int not null,
     WY int not null,
     Military int not null,
-    Other Countries int not null,
-    Unknown int not null,
+    OtherCountries int not null,
+    Unknown1 int not null,
     Total int not null,
     primary key (Year)
     );
