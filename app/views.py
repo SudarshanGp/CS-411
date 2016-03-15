@@ -25,6 +25,7 @@ def index():
 
     with open('static/res/test.json') as data_file:
         data1 = json.load(data_file)
+    print(render_data)
 
     return render_template('base.html', data = json.dumps(render_data))
 
