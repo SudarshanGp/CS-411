@@ -52,6 +52,7 @@ CREATE TABLE db.State (
     DC int not null,
     FL int not null,
     GA int not null,
+    Guam int not null,
     Hawaii int not null,
     Idaho int not null,
     IL int not null,
@@ -102,4 +103,4 @@ CREATE TABLE db.State (
 INSERT INTO db.AcademicCollege VALUES('fa14',436,196,571,131,1566,303,1474,2074,156,30,6937);
 INSERT INTO db.Gender VALUES('fa14',3834,3103,6937);
 INSERT INTO db.Ethnicity VALUES('fa14',356,1352,719,188,6,5,3198,1059,54,6937);
-INSERT INTO db.State VALUES('fa14',5,2,10,6,220,17,8,2,3,25,20,0,3,4927,21,10,5,12,2,0,14,22,22,23,1,33,0,3,2,1,79,4,63,6,0,33,0,6,19,4,2,2,2,10,35,4,36,0,22,0,16,0,2,1061,112,6886);
+INSERT INTO db.State VALUES('fa14',5,2,10,6,220,17,8,2,3,25,20,0,0,3,4927,21,10,5,12,2,0,14,22,22,23,1,33,0,3,2,1,79,4,63,6,0,33,0,6,19,4,2,2,2,10,35,4,0,36,22,0,16,0,2,1061,112,6882);
