@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="683f7f4c-7ab1-48e7-bd23-d36cf2e0fb83" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/CS-411.iml" afterPath="$PROJECT_DIR$/.idea/CS-411.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/output.sql" afterPath="$PROJECT_DIR$/app/output.sql" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/sql.py" afterPath="$PROJECT_DIR$/app/sql.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views.py" afterPath="$PROJECT_DIR$/app/views.py" />
     </list>
@@ -19,8 +19,8 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/CS-411$views.coverage" NAME="views Coverage Results" MODIFIED="1458014076896" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
-    <SUITE FILE_PATH="coverage/CS-411$sql.coverage" NAME="sql Coverage Results" MODIFIED="1458011407669" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
+    <SUITE FILE_PATH="coverage/CS-411$views.coverage" NAME="views Coverage Results" MODIFIED="1458015965934" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
+    <SUITE FILE_PATH="coverage/CS-411$sql.coverage" NAME="sql Coverage Results" MODIFIED="1458015255776" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
     <SUITE FILE_PATH="coverage/CS-411$FileParser2.coverage" NAME="FileParser2 Coverage Results" MODIFIED="1458005681727" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -39,13 +39,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.42771083">
-              <caret line="86" column="27" selection-start-line="86" selection-start-column="27" selection-end-line="86" selection-end-column="27" />
+            <state vertical-scroll-proportion="-9.111111">
+              <caret line="90" column="201" selection-start-line="90" selection-start-column="201" selection-end-line="90" selection-end-column="201" />
               <folding>
-                <marker date="1458014075000" expanded="true" signature="2196:2218" placeholder="SELECT * FRO... State" />
+                <marker date="1458015964000" expanded="true" signature="2209:2231" placeholder="SELECT * FRO... State" />
               </folding>
             </state>
           </provider>
@@ -54,8 +54,18 @@
       <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/static/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="80.166664">
-              <caret line="113" column="1" selection-start-line="113" selection-start-column="1" selection-end-line="113" selection-end-column="1" />
+            <state vertical-scroll-proportion="-7.0392156">
+              <caret line="312" column="108" selection-start-line="288" selection-start-column="3" selection-end-line="312" selection-end-column="108" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="menu.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/static/js/menu.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6987952">
+              <caret line="302" column="9" selection-start-line="302" selection-start-column="9" selection-end-line="302" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -67,47 +77,6 @@
             <state vertical-scroll-proportion="-15.375">
               <caret line="60" column="17" selection-start-line="60" selection-start-column="17" selection-end-line="60" selection-end-column="17" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sql.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/sql.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="18" selection-end-column="37" />
-              <folding>
-                <marker date="1458011944000" expanded="true" signature="359:381" placeholder="SELECT * FRO... State" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="output.sql" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/output.sql">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.074074">
-              <caret line="53" column="6" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FileParser.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/FileParser.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="56" column="12" selection-start-line="56" selection-start-column="12" selection-end-line="56" selection-end-column="12" />
-              <folding>
-                <marker date="1458006271000" expanded="true" signature="498:546" placeholder="DROP TABLE I... " />
-                <marker date="1458006271000" expanded="true" signature="564:944" placeholder="CREATE TABLE... AcademicCollege" />
-                <marker date="1458006271000" expanded="true" signature="964:1006" placeholder="DROP TABLE I... " />
-                <marker date="1458006271000" expanded="true" signature="1024:1374" placeholder="CREATE TABLE... Ethnicity" />
-                <marker date="1458006271000" expanded="true" signature="1394:1433" placeholder="DROP TABLE I... " />
-                <marker date="1458006271000" expanded="true" signature="1451:1617" placeholder="CREATE TABLE... Gender" />
-                <marker date="1458006271000" expanded="true" signature="1637:1675" placeholder="DROP TABLE I... " />
-                <marker date="1458006271000" expanded="true" signature="1693:3176" placeholder="CREATE TABLE... State" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -131,9 +100,10 @@
         <option value="$PROJECT_DIR$/FileParser.py" />
         <option value="$PROJECT_DIR$/app/FileParser.py" />
         <option value="$PROJECT_DIR$/app/templates/base.html" />
-        <option value="$PROJECT_DIR$/app/output.sql" />
         <option value="$PROJECT_DIR$/app/sql.py" />
+        <option value="$PROJECT_DIR$/app/output.sql" />
         <option value="$PROJECT_DIR$/app/views.py" />
+        <option value="$PROJECT_DIR$/app/static/css/style.css" />
       </list>
     </option>
   </component>
@@ -615,7 +585,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="38" y="23" width="1390" height="877" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.268546" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -624,7 +594,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299363" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3299363" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3299363" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32866243" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -691,35 +661,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/FileParser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="56" column="12" selection-start-line="56" selection-start-column="12" selection-end-line="56" selection-end-column="12" />
+        <state vertical-scroll-proportion="-5.1022043">
+          <caret line="24" column="21" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
           <folding>
-            <marker date="1458006271000" expanded="true" signature="498:546" placeholder="DROP TABLE I... " />
-            <marker date="1458006271000" expanded="true" signature="564:944" placeholder="CREATE TABLE... AcademicCollege" />
-            <marker date="1458006271000" expanded="true" signature="964:1006" placeholder="DROP TABLE I... " />
-            <marker date="1458006271000" expanded="true" signature="1024:1374" placeholder="CREATE TABLE... Ethnicity" />
-            <marker date="1458006271000" expanded="true" signature="1394:1433" placeholder="DROP TABLE I... " />
-            <marker date="1458006271000" expanded="true" signature="1451:1617" placeholder="CREATE TABLE... Gender" />
-            <marker date="1458006271000" expanded="true" signature="1637:1675" placeholder="DROP TABLE I... " />
-            <marker date="1458006271000" expanded="true" signature="1693:3176" placeholder="CREATE TABLE... State" />
+            <marker date="1458014823000" expanded="true" signature="498:546" placeholder="DROP TABLE I... " />
+            <marker date="1458014823000" expanded="true" signature="564:944" placeholder="CREATE TABLE... AcademicCollege" />
+            <marker date="1458014823000" expanded="true" signature="964:1006" placeholder="DROP TABLE I... " />
+            <marker date="1458014823000" expanded="true" signature="1024:1300" placeholder="CREATE TABLE... Ethnicity" />
+            <marker date="1458014823000" expanded="true" signature="1024:1372" placeholder="CREATE TABLE... Ethnicity" />
+            <marker date="1458014823000" expanded="true" signature="1392:1431" placeholder="DROP TABLE I... " />
+            <marker date="1458014823000" expanded="true" signature="1449:1615" placeholder="CREATE TABLE... Gender" />
+            <marker date="1458014823000" expanded="true" signature="1635:1673" placeholder="DROP TABLE I... " />
+            <marker date="1458014823000" expanded="true" signature="1691:3342" placeholder="CREATE TABLE... State" />
+            <marker date="1458014823000" expanded="true" signature="3275:3342" placeholder="CREATE TABLE... State" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/output.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.074074">
-          <caret line="53" column="6" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="6" />
+        <state vertical-scroll-proportion="0.30405405">
+          <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/sql.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="18" selection-end-column="37" />
+        <state vertical-scroll-proportion="0.78313255">
+          <caret line="26" column="20" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
           <folding>
-            <marker date="1458011944000" expanded="true" signature="359:381" placeholder="SELECT * FRO... State" />
+            <marker date="1458015219000" expanded="true" signature="353:375" placeholder="SELECT * FRO... State" />
           </folding>
         </state>
       </provider>
@@ -732,21 +704,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.111111">
+          <caret line="90" column="201" selection-start-line="90" selection-start-column="201" selection-end-line="90" selection-end-column="201" />
+          <folding>
+            <marker date="1458015964000" expanded="true" signature="2209:2231" placeholder="SELECT * FRO... State" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/static/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="80.166664">
-          <caret line="113" column="1" selection-start-line="113" selection-start-column="1" selection-end-line="113" selection-end-column="1" />
+        <state vertical-scroll-proportion="-7.0392156">
+          <caret line="312" column="108" selection-start-line="288" selection-start-column="3" selection-end-line="312" selection-end-column="108" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views.py">
+    <entry file="file://$PROJECT_DIR$/app/static/js/menu.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42771083">
-          <caret line="86" column="27" selection-start-line="86" selection-start-column="27" selection-end-line="86" selection-end-column="27" />
-          <folding>
-            <marker date="1458014075000" expanded="true" signature="2196:2218" placeholder="SELECT * FRO... State" />
-          </folding>
+        <state vertical-scroll-proportion="0.6987952">
+          <caret line="302" column="9" selection-start-line="302" selection-start-column="9" selection-end-line="302" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>

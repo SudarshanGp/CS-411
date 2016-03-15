@@ -6,13 +6,12 @@ sys.path.insert(2, '/usr/local/lib/python2.7/site-packages')
 from flask import Flask, render_template, request, jsonify
 import pymysql, json
 import itertools
-
+import pprint
 app = Flask(__name__)
 
 db  = ""
 cursor = ""
-
-
+render_data = []
 
 
 @app.route('/')
@@ -24,8 +23,10 @@ def index():
     :return: Return the base.html template when the root / or /index is requested
     """
 
+    with open('static/res/test.json') as data_file:
+        data1 = json.load(data_file)
 
-    return render_template('base.html')
+    return render_template('base.html', data = json.dumps(render_data))
 
 
 # @app.route('/info', methods=['GET', 'POST'])
@@ -77,27 +78,23 @@ if __name__ == '__main__':
     states = [dict(itertools.izip(column_names, row))
             for row in cursor.fetchall()]
     print(states)
-    render_data = {}
     print(type(data))
     print(data['objects']['units']['geometries'])
     print(len(data['objects']['units']['geometries']))
     print(len(states[0]))
-    for state, pop in enumerate(states[0]):
+    for pop, state in enumerate(states[0]):
         temp = {}
-        temp['state'] = pop
-        temp['students'] = state
-        print(state)
-        # print(data['objects']['units']['geometries'])
-        # print(type(data['objects']['units']['geometries']))
+        temp['state'] = state
+        temp['students'] = pop
+        # print("STAETE " , state)
         for key, value in enumerate(data['objects']['units']['geometries']):
-            # print(value)
-            if value['properties']['name'] is state:
-                print("HERE", state, value['properties']['name'])
-        #         temp['FIPS'] = value['id']
-        #
-        print(temp)
-    # for key, value in data.iteritems():
-    #     print(key)
-    #     print(value)
+            if value['properties']['name'].replace(" ", "").lower() in state.replace(" ", "").lower() and len(value['properties']['name'].replace(" ", "").lower()) == len(state.replace(" ", "").lower()):
+                print("IN IF")
+                print(value['properties']['name'].replace(" ", "").lower() ,state.replace(" ", "").lower() )
 
-    # app.run(host='0.0.0.0')
+                temp['FIPS'] = value['id']
+                render_data.append(temp)
+
+    pprint.pprint(render_data)
+    print(len(render_data))
+    app.run(host='0.0.0.0')

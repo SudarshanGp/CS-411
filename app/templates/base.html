@@ -16,10 +16,20 @@
       <script src="static/bootstrap-treeview/src/js/bootstrap-treeview.js"></script>
       <script src="static/js/menu.js"></script>
       <script src="static/js/tipsy.js"></script>
+    <script type="text/javascript" src="static/js/mapgenerator.js"></script>
+        <link href="static/d3-geomap/css/d3.geomap.css" rel="stylesheet">
+        <link href="static/d3-slider/d3.slider.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans"/>
+{#        <link rel="stylesheet" href="http://rawgithub.com/Caged/d3-tip/master/examples/example-styles.css">#}
+{#        <script type="text/javascript" src="d3/d3.js"></script>#}
+        <script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.min.js"></script>
+
+        <script src="static/d3-geomap/vendor/d3.geomap.dependencies.min.js"></script>
+        <script src="static/d3-geomap/js/d3.geomap.js"></script>
+        <script src="static/d3-slider/d3.slider.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
   <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.min.js"></script>
         <script type="text/javascript" src="static/js/slider.js"></script>
         <script type="text/javascript" src="static/js/tipindex.js"></script>
           <nav id="navigator" class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -37,7 +47,7 @@
 
 </head>
 <body>
-HI
+
 {#    <div class="container">#}
 {#        <div class ="row">#}
 {#                <div id="slider3"></div>#}
@@ -56,12 +66,23 @@ HI
 {##}
 {#    </div>#}
 {##}
-{#    <script type="text/javascript">#}
-{#    $( document ).ready(function() {#}
-{#      menu();#}
-{##}
-{#    });#}
-{#    </script>#}
+    <script type="text/javascript">
+    $( document ).ready(function() {
+        mapgenerate({{ data|safe }});
 
+
+    });
+    </script>
+    <div class="wrapper">
+
+        <div style="text-align: center;"><h2 style="margin:10px 0px 0px 0px">Year <span id="slider4text">2014</span></h2></div>
+        <div id="slider4"></div>
+        <div style="text-align: center;"><p style="color:#bbb">&lt;Drag or click the slider to change the year&gt;</p></div>
+        </div>
+        <hr>
+        <div class="wrapper">
+        <div style="text-align: center;"><span id="variableText" style="font-size:30px">Enrollment per State</span></div>
+        <div style="text-align: center;"><p style="color:#bbb; margin:0px;">&lt;Mouse over the map to see details for each state&gt;</p></div>
+    </div>
 </body>
 </html>
