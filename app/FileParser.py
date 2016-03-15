@@ -10,7 +10,7 @@ import sys  #getting sys arguments
 import os #for getting cwd
 
 db_name = 'Demo.db'
-CurrentDir= os.getcwd()+"/data/"
+CurrentDir= os.getcwd()+"/static/res/"
 # /Users/Aadhya/GitHub
 
 def buildOutputSQL(file_name, db_name):
