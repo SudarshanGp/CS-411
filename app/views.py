@@ -27,7 +27,7 @@ def index():
         data1 = json.load(data_file)
     print(render_data)
 
-    return render_template('base.html', data = json.dumps(render_data))
+    return render_template('base.html', data =json.dumps(render_data))
 
 
 # @app.route('/info', methods=['GET', 'POST'])
