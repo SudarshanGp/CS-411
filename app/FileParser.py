@@ -198,11 +198,16 @@ def writeInsert(file_name, db_name, list, insType):
     f.close()
 
 def main():
-    file_name = "output.sql"
     dbName = "db"
-    buildOutputSQL(file_name, dbName)
 
     fileloc=CurrentDir+str(sys.argv[1])
+    file_name = str(sys.argv[1])[:-4]+".sql"
+    createNew = ""
+    if(len(sys.argv) == 3):
+        createNew = str(sys.argv[2])
+
+    if(createNew is "new"):
+        buildOutputSQL(file_name, dbName)
 
     AcademicList=AcademicCollege(fileloc) 
     GenderList=Gender(fileloc)
