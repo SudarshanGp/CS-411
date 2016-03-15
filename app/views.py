@@ -27,7 +27,7 @@ def index():
         data1 = json.load(data_file)
     print(render_data)
 
-    return render_template('base.html', data =json.dumps(render_data))
+    return render_template('base.html', data =render_data)
 
 
 # @app.route('/info', methods=['GET', 'POST'])
@@ -78,20 +78,22 @@ if __name__ == '__main__':
     column_names = [col[0] for col in desc]
     states = [dict(itertools.izip(column_names, row))
             for row in cursor.fetchall()]
-    print(states)
-    print(type(data))
-    print(data['objects']['units']['geometries'])
-    print(len(data['objects']['units']['geometries']))
-    print(len(states[0]))
-    for pop, state in enumerate(states[0]):
+    print(states[0])
+    # print(type(data))
+    # print(data['objects']['units']['geometries'])
+    # print(len(data['objects']['units']['geometries']))
+    # print(len(states[0]))
+    for pop, state in states[0].iteritems():
         temp = {}
-        temp['state'] = state
-        temp['students'] = pop
+        print(pop)
+        print(state)
+        temp['state'] = pop
+        temp['students'] = state
         # print("STAETE " , state)
         for key, value in enumerate(data['objects']['units']['geometries']):
-            if value['properties']['name'].replace(" ", "").lower() in state.replace(" ", "").lower() and len(value['properties']['name'].replace(" ", "").lower()) == len(state.replace(" ", "").lower()):
-                print("IN IF")
-                print(value['properties']['name'].replace(" ", "").lower() ,state.replace(" ", "").lower() )
+            if value['properties']['name'].replace(" ", "").lower() in pop.replace(" ", "").lower() and len(value['properties']['name'].replace(" ", "").lower()) == len(pop.replace(" ", "").lower()):
+                # print("IN IF")
+                # print(value['properties']['name'].replace(" ", "").lower() ,state.replace(" ", "").lower() )
 
                 temp['FIPS'] = value['id']
                 render_data.append(temp)
