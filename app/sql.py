@@ -8,7 +8,7 @@ db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', 
 
 cursor = db.cursor()
 # print(cursor)
-f = open('output.sql', 'r')
+f = open('fa15.sql', 'r')
 query = " ".join(f.readlines())
 cursor.execute(query)
 db.commit()
