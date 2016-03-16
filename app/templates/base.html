@@ -45,7 +45,7 @@
          <div id = "top">
             <div  class="container header">
                <div  class="navbar header">
-                  <span id = "heading"><span class="glyphicon glyphicon-chevron-left"></span>DemoViz<span class="glyphicon glyphicon-chevron-right"></span></span>
+                  <span id = "heading"><a href = "/"><span class="glyphicon glyphicon-chevron-left"></span>DemoViz<span class="glyphicon glyphicon-chevron-right"></span></a></span>
                </div>
                <!-- navbar header -->
             </div>
@@ -53,9 +53,13 @@
          </div>
               </nav>
     </head>
-    
+{% block data %}    
     <body>
         <div class = "container">
+            <div class = "loginpage">
+                <button class = "row" id = "button5" name = "login" type = "submit"><a href = "/login" id = "loginword">  Login </a></button>
+            </div>
+{#                <a href = "/login">Login</a></button>#}
             <form class="row" id = "infoYear" action="addcomment" method="POST">
 {#                <div class = "col-md-6 infoButton">#}
                     <button id = "button1" name = "2014" type = "submit">2014</button>
@@ -90,7 +94,7 @@
                 var svg = div.append("svg")
                             .attr("id", "map13")
                             .attr("height", 500)
-                            .attr("width", 860);
+                            .attr("width", 960);
 
     {#            var murder = function() {#}
     {#                letter = 'Murder';#}
@@ -131,7 +135,7 @@
                             .projection(d3.geo.albersUsa)
                             .column(col)
                             .unitId('FIPS')
-                            .scale(1000)
+                            .scale(900)
                             .legend(true);
                     }
 
@@ -158,11 +162,11 @@
                     var map;
                     map = d3.geomap.choropleth()
                             .geofile('../static/d3-geomap/topojson/countries/USA.json')
-                            .colors(colorbrewer.Reds[4])
+                            .colors(colorbrewer.Reds[9])
                             .projection(d3.geo.albersUsa)
                             .column(col)
                             .unitId('FIPS')
-                            .scale(1000)
+                            .scale(900)
                             .legend(true);
                     console.log(map);
 
@@ -195,3 +199,4 @@
 {#            <p style="font-size:12px">Data source: <a href="https://www.fbi.gov/stats-services/crimestats">A series of statistical crime reports and publications, detailing specific offenses and outlining trends</a>.</p>#}
 {#        </div>#}
     </body>
+{% endblock %}

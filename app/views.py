@@ -26,6 +26,10 @@ def index():
     create_2014()
     return render_template('base.html', data =render_data)
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
 @app.route('/delete', methods=['GET', 'POST'])
 def year_delete_response():
     print "delete"
@@ -58,19 +62,26 @@ def exception_handler(error):
 
 def delete_2014():
     print "deleting year row"
-    cursor.execute("DELETE FROM db.State WHERE Year = 'fa14'")
+    f = open('rmfa14.sql', 'r')
+    query = " ".join(f.readlines())
+    f.close()
+    cursor.execute(query)
     db.commit()
 
 def delete_2015():
-    cursor.execute("DELETE FROM db.State WHERE Year = 'fa15'")
+    f = open('rmfa15.sql', 'r')
+    query = " ".join(f.readlines())
+    f.close()
+    cursor.execute(query)
     db.commit()
 
 def create_2014():
     f = open('fa14.sql', 'r')
     query = " ".join(f.readlines())
+    f.close()
     cursor.execute(query)
     db.commit()
-    cursor.execute("SELECT * FROM db.State WHERE Year = 'fa14'")
+    cursor.execute("SELECT *  FROM db.State WHERE Year = 'fa14'")
     desc = cursor.description
     column_names = [col[0] for col in desc]
     states = [dict(itertools.izip(column_names, row))
@@ -83,13 +94,16 @@ def create_2014():
         for key, value in enumerate(data['objects']['units']['geometries']):
             if value['properties']['name'].replace(" ", "").lower() in pop.replace(" ", "").lower() and len(value['properties']['name'].replace(" ", "").lower()) == len(pop.replace(" ", "").lower()):
                 temp['FIPS'] = value['id']
+                if temp['FIPS'] == 'US17':
+                    temp['students'] = 0
                 render_data.append(temp)
 
 def create_2015():
-    # f = open('fa15_create.sql', 'r')
-    # query = " ".join(f.readlines())
-    # cursor.execute(query)
-    # db.commit()
+    f = open('fa15.sql', 'r')
+    query = " ".join(f.readlines())
+    f.close()
+    cursor.execute(query)
+    db.commit()
     cursor.execute("SELECT * FROM db.State WHERE Year = 'fa15'")
     desc = cursor.description
     column_names = [col[0] for col in desc]
@@ -103,6 +117,8 @@ def create_2015():
         for key, value in enumerate(data['objects']['units']['geometries']):
             if value['properties']['name'].replace(" ", "").lower() in pop.replace(" ", "").lower() and len(value['properties']['name'].replace(" ", "").lower()) == len(pop.replace(" ", "").lower()):
                 temp['FIPS'] = value['id']
+                if temp['FIPS'] == 'US17':
+                    temp['students'] = 0
                 render_data1.append(temp)
 
 if __name__ == '__main__':

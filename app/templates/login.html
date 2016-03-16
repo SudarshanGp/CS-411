@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block data %}
+<form name= "CreateLogin" action = "LoginInsert.php" action = "login" method = "post">
+
+    <table>
+		<tr>
+		<td>User Name: </td>
+		<td> <input name= 'Username' type='text'> </td>
+		</tr>
+		<br>
+		<tr>
+		<td>Password: </td>
+		<td> <input name= 'Password' type='password'></td>
+		</tr>
+	</table>
+</form>
+
+
+{%  endblock %}
