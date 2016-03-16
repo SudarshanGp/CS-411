@@ -28,10 +28,12 @@ def index():
 
 @app.route('/delete', methods=['GET', 'POST'])
 def year_delete_response():
-    if '2014' in (request.form.keys())[0]:
+    print "delete"
+    if '2014Del' in (request.form.keys())[0]:
+        print "deleting"
         delete_2014()
         return render_template('base.html')
-    else:
+    elif '2015Del' in (request.form.keys())[0]:
         delete_2015()
         return render_template('base.html')
 
@@ -55,16 +57,19 @@ def exception_handler(error):
     return 'ERROR ' + repr(error)
 
 def delete_2014():
-    cursor.execute("DELETE FROM db.State WHERE State.Year = 'fa14'")
+    print "deleting year row"
+    cursor.execute("DELETE FROM db.State WHERE Year = 'fa14'")
+    db.commit()
 
 def delete_2015():
-    cursor.execute("DELETE FROM db.State WHERE State.Year = 'fa15'")
+    cursor.execute("DELETE FROM db.State WHERE Year = 'fa15'")
+    db.commit()
 
 def create_2014():
-    # f = open('fa14_create.sql', 'r')
-    # query = " ".join(f.readlines())
-    # cursor.execute(query)
-    # db.commit()
+    f = open('fa14.sql', 'r')
+    query = " ".join(f.readlines())
+    cursor.execute(query)
+    db.commit()
     cursor.execute("SELECT * FROM db.State WHERE Year = 'fa14'")
     desc = cursor.description
     column_names = [col[0] for col in desc]
