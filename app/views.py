@@ -22,39 +22,17 @@ def index():
     the website is hosted. It returns the base.html template and is rendered by jinja2
     :return: Return the base.html template when the root / or /index is requested
     """
-
-    with open('static/res/test.json') as data_file:
-        data1 = json.load(data_file)
-    print(render_data)
+    # print(render_data)
 
     return render_template('base.html', data =render_data)
 
 
-# @app.route('/info', methods=['GET', 'POST'])
-# def revision_response():
-#     """
-#     revision_response handles GET and POST requests made by its caller function and returns
-#     revision information about a specific file that is passed in when the AJAX request is
-#     made by the caller
-#     :return: Returns a json object to the caller function that made the AJAX request
-#     """
-#     if 'DIR' in request.json['type']:
-#         return jsonify(msg='NO')
-#     title = str(request.json['url'])
-#     name = '/' + '/'.join(title.split('/')[5:])
-#     if 'FILE' in request.json['type']:
-#         file_revisions = svn_log[name]
-#         json_data = []
-#         for (i, val) in enumerate(file_revisions):
-#             json_data.append(val.__dict__)
-#         return jsonify(
-#             msg='YES',
-#             url=request.json['url'],
-#             name=request.json['name'],
-#             revision=request.json['revision'].strip(),
-#             revisions=json_data,
-#             title=title[6],
-#         )
+@app.route('/addcomment', methods=['GET', 'POST'])
+def year_response():
+    print("HERE")
+    if '2014' in (request.form.keys())[0]:
+        return render_template('base.html', data =render_data)
+    else:
 
 
 @app.errorhandler(Exception)
@@ -78,15 +56,15 @@ if __name__ == '__main__':
     column_names = [col[0] for col in desc]
     states = [dict(itertools.izip(column_names, row))
             for row in cursor.fetchall()]
-    print(states[0])
+    # print(states[0])
     # print(type(data))
     # print(data['objects']['units']['geometries'])
     # print(len(data['objects']['units']['geometries']))
     # print(len(states[0]))
     for pop, state in states[0].iteritems():
         temp = {}
-        print(pop)
-        print(state)
+        # print(pop)
+        # print(state)
         temp['state'] = pop
         temp['students'] = state
         # print("STAETE " , state)
@@ -98,6 +76,6 @@ if __name__ == '__main__':
                 temp['FIPS'] = value['id']
                 render_data.append(temp)
 
-    pprint.pprint(render_data)
-    print(len(render_data))
+    # pprint.pprint(render_data)
+    # print(len(render_data))
     app.run(host='0.0.0.0')
