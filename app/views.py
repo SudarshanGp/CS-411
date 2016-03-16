@@ -61,10 +61,10 @@ def delete_2015():
     cursor.execute("DELETE FROM db.State WHERE State.Year = 'fa15'")
 
 def create_2014():
-    f = open('fa14_create.sql', 'r')
-    query = " ".join(f.readlines())
-    cursor.execute(query)
-    db.commit()
+    # f = open('fa14_create.sql', 'r')
+    # query = " ".join(f.readlines())
+    # cursor.execute(query)
+    # db.commit()
     cursor.execute("SELECT * FROM db.State WHERE Year = 'fa14'")
     desc = cursor.description
     column_names = [col[0] for col in desc]
@@ -81,10 +81,10 @@ def create_2014():
                 render_data.append(temp)
 
 def create_2015():
-    f = open('fa15_create.sql', 'r')
-    query = " ".join(f.readlines())
-    cursor.execute(query)
-    db.commit()
+    # f = open('fa15_create.sql', 'r')
+    # query = " ".join(f.readlines())
+    # cursor.execute(query)
+    # db.commit()
     cursor.execute("SELECT * FROM db.State WHERE Year = 'fa15'")
     desc = cursor.description
     column_names = [col[0] for col in desc]
