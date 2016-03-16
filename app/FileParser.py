@@ -198,11 +198,28 @@ def writeInsert(file_name, db_name, list, insType, first):
     f.write(");\n")
     f.close()
 
+def writeDel(file_name, db_name, insType, first):
+    yearVal = file_name[2:]
+    yearVal = yearVal[:-4]
+    if first == True:
+        f = open(file_name, "w")
+    else:
+        f=open(file_name,"a")
+    f.write("DELETE FROM ")
+    f.write(db_name)
+    f.write(".")
+    f.write(insType)
+    f.write(" WHERE Year = '")
+    f.write(yearVal)
+    f.write("';\n")
+    f.close()
+
 def main():
     dbName = "db"
 
     fileloc=CurrentDir+str(sys.argv[1])
     file_name = str(sys.argv[1])[:-4]+".sql"
+    rm_file = "rm"+file_name
     createNew = ""
     if(len(sys.argv) == 3):
         createNew = str(sys.argv[2])
@@ -219,10 +236,14 @@ def main():
     StateList=State(fileloc)
 
     writeInsert(file_name, dbName, AcademicList, "AcademicCollege", first)
+    writeDel(rm_file, dbName, "AcademicCollege", first)
     first = False;
     writeInsert(file_name, dbName, GenderList, "Gender", first)
+    writeDel(rm_file, dbName, "Gender", first)
     writeInsert(file_name, dbName, EthnicityList, "Ethnicity", first)
+    writeDel(rm_file, dbName, "Ethnicity", first)
     writeInsert(file_name, dbName, StateList, "State", first)
+    writeDel(rm_file, dbName, "State", first)
 
 
 if __name__ == '__main__':
