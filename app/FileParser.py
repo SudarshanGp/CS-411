@@ -1,5 +1,3 @@
-__author__ = 'Nathan'
-#!/usr/bin/env python
 import sys
 
 sys.path.insert(2, '/usr/local/lib/python2.7/site-packages')
@@ -182,9 +180,12 @@ def length(i):
     """returns the length of i"""
     return len(str(i))
 
-def writeInsert(file_name, db_name, list, insType):
-    f = open(file_name, "a")
-    f.write("INSERT INTO ")
+def writeInsert(file_name, db_name, list, insType, first):
+    if first == True:
+        f = open(file_name, "w")
+    else:
+        f=open(file_name,"a")
+    f.write("INSERT IGNORE INTO ")
     f.write(db_name)
     f.write(".")
     f.write(insType)
@@ -205,19 +206,23 @@ def main():
     createNew = ""
     if(len(sys.argv) == 3):
         createNew = str(sys.argv[2])
+    
+    first = True;
 
-    if(createNew is "new"):
+    if(createNew is 'n'):
         buildOutputSQL(file_name, dbName)
+        first = False;
 
     AcademicList=AcademicCollege(fileloc) 
     GenderList=Gender(fileloc)
     EthnicityList=Ethnicity(fileloc)
     StateList=State(fileloc)
 
-    writeInsert(file_name, dbName, AcademicList, "AcademicCollege")
-    writeInsert(file_name, dbName, GenderList, "Gender")
-    writeInsert(file_name, dbName, EthnicityList, "Ethnicity")
-    writeInsert(file_name, dbName, StateList, "State")
+    writeInsert(file_name, dbName, AcademicList, "AcademicCollege", first)
+    first = False;
+    writeInsert(file_name, dbName, GenderList, "Gender", first)
+    writeInsert(file_name, dbName, EthnicityList, "Ethnicity", first)
+    writeInsert(file_name, dbName, StateList, "State", first)
 
 
 if __name__ == '__main__':
