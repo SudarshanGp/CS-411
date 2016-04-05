@@ -38,15 +38,17 @@ def dashboard():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     return render_template('dashboard.html')
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['GET','POST'])
 def upload():
     if request.method == 'POST':
         file = request.files['file']
         if file:
-            filename = secure_filename(file.filename)
+            filename = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
+            return render_template('dashboard.html')
+        else:
+            return render_template('upload.html', message = "File not able to upload")
+    return render_template('upload.html', message = "No file uploaded")
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
