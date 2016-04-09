@@ -88,10 +88,10 @@ def FilePar(fileloc):
                 continue
         
             if(current_sheet.cell(i,5).value!=''):
-                if (current_sheet.cell(i,5).value not in Department[Departmentlist[dep-1]]):
-                    maj='"'+current_sheet.cell(i,5).value
-                    maj= maj[0:len(maj)-1]
-                    maj+='"'
+            	maj='"'+current_sheet.cell(i,5).value
+                maj= maj[0:len(maj)-1]
+                maj+='"'
+                if (maj not in Department[Departmentlist[dep-1]]):
                     Department[Departmentlist[dep-1]].append(maj)
                     counter += 1
                 if counter in counterlist:
