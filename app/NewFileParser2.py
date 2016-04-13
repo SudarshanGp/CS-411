@@ -51,7 +51,10 @@ def buildOutputSQL(file_name, db_name):
     Multi int not null,
     Foreigner int not null,
     Other int not null,
-    primary key (ID)
+    primary key (ID),
+    FOREIGN KEY(ID) REFERENCES '''+ db_name+'''.id(ID) 
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
     );\n''')
    f.write("DROP TABLE IF EXISTS "+db_name+".Gender;\n")
    f.write("CREATE TABLE "+db_name+'''.Gender (
@@ -59,14 +62,20 @@ def buildOutputSQL(file_name, db_name):
     Male int not null,
     Female int not null,
     Other int not null,
-    primary key (ID)
+    primary key (ID),
+    FOREIGN KEY(ID) REFERENCES '''+ db_name+'''.id(ID) 
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
     );\n''')
    f.write("DROP TABLE IF EXISTS "+db_name+".Residency;\n")
    f.write("CREATE TABLE "+db_name+'''.Residency (
     ID int not null,
     IL int not null,
     NonIL int not null,
-    primary key (ID)
+    primary key (ID),
+    FOREIGN KEY(ID) REFERENCES '''+ db_name+'''.id(ID) 
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
     );\n''')
    f.close
 
@@ -122,22 +131,36 @@ def FilePar(fileloc, datb):
 				tempc = Department[Departmentlist[dep-1]][maj]
 				if(tempc in Gender.keys()):
 					j=tempc
-					Gender[j][0]+=current_sheet.cell(i,9).value
-					Gender[j][1]+=current_sheet.cell(i,10).value
-					Gender[j][2]+=current_sheet.cell(i,11).value
+					if(type(current_sheet.cell(i,9).value) is float):
+						Gender[j][0]+=current_sheet.cell(i,9).value
+					if(type(current_sheet.cell(i,10).value) is float):
+						Gender[j][1]+=current_sheet.cell(i,10).value
+					if(type(current_sheet.cell(i,9).value) is float):
+						Gender[j][2]+=current_sheet.cell(i,11).value
 
-					Ethnicity[j][0]+=current_sheet.cell(i,12).value
-					Ethnicity[j][1]+=current_sheet.cell(i,13).value
-					Ethnicity[j][2]+=current_sheet.cell(i,14).value
-					Ethnicity[j][3]+=current_sheet.cell(i,15).value
-					Ethnicity[j][4]+=current_sheet.cell(i,16).value
-					Ethnicity[j][5]+=current_sheet.cell(i,17).value
-					Ethnicity[j][6]+=current_sheet.cell(i,18).value
-					Ethnicity[j][7]+=current_sheet.cell(i,19).value
-					Ethnicity[j][8]+=current_sheet.cell(i,20).value
+					if(type(current_sheet.cell(i,12).value) is float):
+						Ethnicity[j][0]+=current_sheet.cell(i,12).value
+					if(type(current_sheet.cell(i,13).value) is float):
+						Ethnicity[j][1]+=current_sheet.cell(i,13).value
+					if(type(current_sheet.cell(i,14).value) is float):
+						Ethnicity[j][2]+=current_sheet.cell(i,14).value
+					if(type(current_sheet.cell(i,15).value) is float):
+						Ethnicity[j][3]+=current_sheet.cell(i,15).value
+					if(type(current_sheet.cell(i,16).value) is float):
+						Ethnicity[j][4]+=current_sheet.cell(i,16).value
+					if(type(current_sheet.cell(i,17).value) is float):
+						Ethnicity[j][5]+=current_sheet.cell(i,17).value
+					if(type(current_sheet.cell(i,18).value) is float):
+						Ethnicity[j][6]+=current_sheet.cell(i,18).value
+					if(type(current_sheet.cell(i,19).value) is float):
+						Ethnicity[j][7]+=current_sheet.cell(i,19).value
+					if(type(current_sheet.cell(i,20).value) is float):
+						Ethnicity[j][8]+=current_sheet.cell(i,20).value
 
-					Residency[j][0]+=current_sheet.cell(i,23).value
-					Residency[j][1]+=current_sheet.cell(i,24).value
+					if(type(current_sheet.cell(i,23).value) is float):
+						Residency[j][0]+=current_sheet.cell(i,23).value
+					if(type(current_sheet.cell(i,24).value) is float):
+						Residency[j][1]+=current_sheet.cell(i,24).value
 				else:
 					Gender[tempc]=[0,0,0]
 					Ethnicity[tempc]=[0,0,0,0,0,0,0,0,0]
@@ -181,11 +204,11 @@ def writeDel(file_name, db_name, insType, first):
     f.close()
 
 def main():
-    dbName = "db3"
+    dbName = "db4"
 
     fileloc=CurrentDir+str(sys.argv[1])
     file_name = str(sys.argv[1])[:-4]+".sql"
-    # rm_file = "rm"+file_name
+    rm_file = "rm"+file_name
     createNew = ""
     if(len(sys.argv) == 3):
         createNew = str(sys.argv[2])
@@ -245,7 +268,7 @@ def main():
     # EthnicityList=Ethnicity(fileloc)
     # StateList=State(fileloc)
     writeInsert(file_name, dbName, ids, "id", first)
-    # writeDel(rm_file, dbName, "id", first)
+    writeDel(rm_file, dbName, "id", first)
     first = False;
     writeInsert(file_name, dbName, gen, "Gender", first)
     # writeDel(rm_file, dbName, "Gender", first)
