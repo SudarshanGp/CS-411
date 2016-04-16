@@ -2,7 +2,7 @@ var department_data = "";
 var major_data = "";
 var department_clicked = "Engineering";
 var year = "sp05";
-var major = "";
+var major = "Computer Science";
 var department_pie_viz = null;
 var major_pie_viz = null;
 var ethinicity_data = "";
@@ -129,23 +129,26 @@ function ethinicity_line(ethinicity) {
 
     var yAxis = d3.svg.axis()
         .scale(y)
-        .orient("left")
-        .ticks(10, "%");
-
+        .orient("left");
 // create an SVG element (appended to body)
 // set size
 // add a "g" element (think "group")
 // annoying d3 gotcha - the 'svg' variable here is a 'g' element
 // the final line sets the transform on <g>, not on <svg>
-    var svg = d3.select("body").append("svg")
+    var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "<strong>Frequency:</strong> <span style='color:red'>" + d.value + "</span>";
+  });
+    var svg = d3.select("#ethnicity").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
     svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
+        .attr("transform", "translate(0," + height + ")");
 
     svg.append("g")
         .attr("class", "y axis")
@@ -158,11 +161,8 @@ function ethinicity_line(ethinicity) {
 
 // d3.tsv is a wrapper around XMLHTTPRequest, returns array of arrays (?) for a TSV file
 // type function transforms strings to numbers, dates, etc.
-    d3.tsv("data.tsv", type, function (error, data) {
-        replay(data);
-    });
-    
-
+    console.log(ethinicity_data);
+    replay(ethinicity_data[year][department_clicked][major]);
     function replay(data) {
         var slices = [];
         for (var i = 0; i < data.length; i++) {
@@ -179,10 +179,11 @@ function ethinicity_line(ethinicity) {
         // measure the domain (for x, unique letters) (for y [0,maxFrequency])
         // now the scales are finished and usable
         x.domain(data.map(function (d) {
-            return d.letter;
+            return d.label;
         }));
         y.domain([0, d3.max(data, function (d) {
-            return d.frequency;
+            console.log(d.value);
+            return d.value;
         })]);
 
         // another g element, this time to move the origin to the bottom of the svg element
@@ -192,12 +193,12 @@ function ethinicity_line(ethinicity) {
         svg.select('.x.axis').transition().duration(300).call(xAxis);
 
         // same for yAxis but with more transform and a title
-        svg.select(".y.axis").transition().duration(300).call(yAxis)
+        svg.select(".y.axis").transition().duration(300).call(yAxis);
 
         // THIS IS THE ACTUAL WORK!
         var bars = svg.selectAll(".bar").data(data, function (d) {
-            return d.letter;
-        }) // (data) is an array/iterable thing, second argument is an ID generator function
+            return d.label;
+        }); // (data) is an array/iterable thing, second argument is an ID generator function
 
         bars.exit()
             .transition()
@@ -215,15 +216,16 @@ function ethinicity_line(ethinicity) {
 
         // the "UPDATE" set:
         bars.transition().duration(300).attr("x", function (d) {
-            return x(d.letter);
+            return x(d.label);
         }) // (d) is one item from the data array, x is the scale object from above
             .attr("width", x.rangeBand()) // constant, so no callback function(d) here
             .attr("y", function (d) {
-                return y(d.frequency);
+                return y(d.value);
             })
             .attr("height", function (d) {
-                return height - y(d.frequency);
+                return height - y(d.value);
             }); // flip the height, because y's domain is bottom up, but SVG renders top down
+        svg.call(tip);
 
     }
 
