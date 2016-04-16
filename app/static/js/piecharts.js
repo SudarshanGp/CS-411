@@ -105,6 +105,7 @@ function set_slider() {
                     document.getElementById('year_data').innerText = "YEAR NOT FOUND : " + year;
                 }
                 else {
+
                     department_pie(department_data);
                     major_pie(major_data);
                     department_clicked = "Engineering";
@@ -115,7 +116,7 @@ function set_slider() {
                     document.getElementById('ethinicity_data').innerText = "Ethnicity for " + major ;
                     document.getElementById('gender_data').innerText = "Gender for " + major ;
                     document.getElementById('major_data').innerText = "Computer Science";
-                    document.getElementById('year_data').innerText = year;
+                    document.getElementById('year_data').innerText = "Fall 20" + value.toString().split('.')[0].slice(-2);
                 }
             }
             else{
@@ -135,7 +136,7 @@ function set_slider() {
                     document.getElementById('ethinicity_data').innerText = "Ethnicity for " + major ;
                     document.getElementById('gender_data').innerText = "Gender for " + major ;
                     document.getElementById('major_data').innerText = "Computer Science";
-                    document.getElementById('year_data').innerText = year;
+                    document.getElementById('year_data').innerText = "Spring 20" + value.toString().split('.')[0].slice(-2);
                 }
 
             }
