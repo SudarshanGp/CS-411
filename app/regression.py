@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.linalg
 from matplotlib.pyplot import *
-#from numpy.random import normal
+from numpy.random import normal
 #from scipy.optimize import curve_fit
 
 
@@ -56,33 +56,33 @@ def main():
         for j in termdict[i]:
             major[j].append([int(i),int(termdict[i][j])])
     
-    yearstemp=[]
-    femalestemp=[]
     newdict={}
     
     majInf=[]
     for i in major.keys():
+
         majInf=np.array(major[i])
         year = majInf[:,0] #x
         val = majInf[:,1] #y
- 
         A = np.array([1+0*year, year]).T
         Q,R = np.linalg.qr(A,"complete")
-        M=np.vander(year)
         m,n=A.shape
-        x = scipy.linalg.solve_triangular(R[:n], Q.T.dot(val)[:n],lower = False)
-        a_c,b_c = x
-        plt.plot(year,val,'o')
-        pltgrid = np.linspace(400,2000,50)
-        new_y=f(pltgrid, b_c, a_c)
-        new_x=pltgrid
+        print i+"\t"+str(np.shape(Q.T.dot(val)[:n]))
+            # sleep(2)
+        if np.shape(Q.T.dot(val)[:n]) == (2,):
+            x = scipy.linalg.solve_triangular(R[:n], Q.T.dot(val)[:n],lower = False)
+            a_c,b_c = x
+            # plt.plot(year,val,'o')
+            pltgrid = np.linspace(400,2000,50)
+            new_y=f(pltgrid, b_c, a_c)
+            new_x=pltgrid
+            
+            newdict[i]=[]
+            newdict[i].append(new_x)
+            newdict[i].append(new_y)
         
-        newdict[i]=[]
-        newdict[i].append(new_x)
-        newdict[i].append(new_y)
-        
-        #plt.plot(pltgrid, f(pltgrid, b_c, a_c),'b-', label='fit')
-        #plt.show()  
+        # plt.plot(pltgrid, f(pltgrid, b_c, a_c),'b-', label='fit')
+        # plt.show()  
     print newdict
         
    
