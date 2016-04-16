@@ -11,7 +11,6 @@ var gender_data = "";
 
 function department_pie(data) {
     department_data = data;
-    console.log(data);
     if (department_pie_viz != null) {
         department_pie_viz.destroy();
         department_pie_viz = null;
@@ -51,7 +50,6 @@ function department_pie(data) {
 }
 
 function major_pie(data) {
-    console.log(data);
     major_data = data;
     if (major_pie_viz != null) {
         major_pie_viz.destroy();
@@ -98,7 +96,6 @@ function set_slider() {
     d3.select('#slider3').call(d3.slider()
             .axis(true).min(2004.5).max(2016).step(0.5)
         .on("slide", function(evt, value) {
-            console.log(value);
             if(value % 1 != 0){
                 year = 'fa' + value.toString().split('.')[0].slice(-2);
                 if (department_data[year] === undefined) {
@@ -121,7 +118,6 @@ function set_slider() {
             }
             else{
                 year = 'sp' + value.toString().split('.')[0].slice(-2);
-                console.log(year);
                 if (department_data[year] === undefined) {
                     document.getElementById('year_data').innerText = "YEAR NOT FOUND : " + year;
                 }
@@ -208,7 +204,6 @@ function ethinicity_line(ethinicity) {
 
 // d3.tsv is a wrapper around XMLHTTPRequest, returns array of arrays (?) for a TSV file
 // type function transforms strings to numbers, dates, etc.
-    console.log(ethinicity_data);
     replay(ethinicity_data[year][department_clicked][major]);
     function replay(data) {
         var slices = [];
@@ -243,7 +238,6 @@ function ethinicity_line(ethinicity) {
 
         // THIS IS THE ACTUAL WORK!
         var bars = svg.selectAll(".bar").data(data, function (d) {
-            console.log("in here");
             svg.call(tip);
             return d.label;
         }); // (data) is an array/iterable thing, second argument is an ID generator function
@@ -337,7 +331,6 @@ function gender_line(gender) {
 
 // d3.tsv is a wrapper around XMLHTTPRequest, returns array of arrays (?) for a TSV file
 // type function transforms strings to numbers, dates, etc.
-    console.log(gender_data);
     replay(gender_data[year][department_clicked][major]);
     function replay(data) {
         var slices = [];
@@ -372,7 +365,6 @@ function gender_line(gender) {
 
         // THIS IS THE ACTUAL WORK!
         var bars = svg.selectAll(".bar").data(data, function (d) {
-            console.log("in here");
             svg.call(tip);
             return d.label;
         }); // (data) is an array/iterable thing, second argument is an ID generator function
