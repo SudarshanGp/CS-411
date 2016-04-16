@@ -139,6 +139,7 @@ function ethinicity_line(ethinicity) {
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
+
     return "<strong>Frequency:</strong> <span style='color:red'>" + d.value + "</span>";
   });
     var svg = d3.select("#ethnicity").append("svg")
@@ -182,7 +183,6 @@ function ethinicity_line(ethinicity) {
             return d.label;
         }));
         y.domain([0, d3.max(data, function (d) {
-            console.log(d.value);
             return d.value;
         })]);
 
@@ -197,6 +197,8 @@ function ethinicity_line(ethinicity) {
 
         // THIS IS THE ACTUAL WORK!
         var bars = svg.selectAll(".bar").data(data, function (d) {
+            console.log("in here");
+            svg.call(tip);
             return d.label;
         }); // (data) is an array/iterable thing, second argument is an ID generator function
 
@@ -212,7 +214,9 @@ function ethinicity_line(ethinicity) {
         bars.enter().append("rect")
             .attr("class", "bar")
             .attr("y", y(0))
-            .attr("height", height - y(0));
+            .attr("height", height - y(0))
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide);
 
         // the "UPDATE" set:
         bars.transition().duration(300).attr("x", function (d) {
@@ -225,7 +229,6 @@ function ethinicity_line(ethinicity) {
             .attr("height", function (d) {
                 return height - y(d.value);
             }); // flip the height, because y's domain is bottom up, but SVG renders top down
-        svg.call(tip);
 
     }
 
