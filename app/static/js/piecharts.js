@@ -1,15 +1,14 @@
-var pie = new d3pie("pie", {
-  data: {
-    content: [
-      { label: "Elephants", value: 1 },
-      { label: "Motmots", value: 2 },
-      { label: "Pikas", value: 3 },
-      { label: "Jays", value: 2 },
-      { label: "Rhubarb", value: 5 },
-      { label: "Tennis", value: 2 },
-      { label: "Chickens", value: 1 }
-    ]
-  },
+function department_pie(data){
+  console.log(data);
+  var pie = new d3pie("pie", {
+        "size": {
+        "canvasHeight": 400,
+		"canvasWidth": 500,
+		"pieOuterRadius": "90%"
+	},
+  data:{
+    "sortOrder": "value-desc",
+    "content":data},
   tooltips: {
     enabled: true,
     type: "placeholder",
@@ -26,3 +25,6 @@ var pie = new d3pie("pie", {
     }
   }
 });
+
+}
+

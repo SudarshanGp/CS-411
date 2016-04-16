@@ -73,7 +73,7 @@ def dashboard():
             sp16_data.append(temp)
     pprint.pprint(sp16_data)
 
-    return render_template('dashboard.html')
+    return render_template('dashboard.html', pie_department_data = sp16_data)
 
 @app.route('/upload', methods=['GET','POST'])
 def upload():
