@@ -62,18 +62,55 @@ def dashboard():
     # pprint.pprint(get_department_names_json)
     # pprint.pprint(get_gender_all_years_json)
     # pprint.pprint(get_gender_sum_json)
+    major_dict = {}
+    for key, value in enumerate(get_gender_sum_json):
+        if value['Year'] in major_dict.keys():
+            if value['Department'] in major_dict[value['Year']]:
+                curr_list = major_dict[value['Year']][value['Department']]
+                temp_dict = {}
+                temp_dict['label'] = value['Major']
+                temp_dict['value'] = value['major_sum']
+                curr_list.append(temp_dict)
+                major_dict[value['Year']][value['Department']] = curr_list
+            else:
+                temp_list = []
+                temp_dict = {}
+                temp_dict['label'] = value['Major']
+                temp_dict['value'] = value['major_sum']
+                temp_list.append(temp_dict)
+                major_dict[value['Year']][value['Department']] = temp_list
+        else:
+            temp_list = []
+            temp_dict = {}
+            temp_dict['label'] = value['Major']
+            temp_dict['value'] = value['major_sum']
+            temp_list.append(temp_dict)
+            major_dict[value['Year']] = {value['Department'] :temp_list }
+            # major_dict[value['Year']] = temp_list
+
 
     # pprint.pprint(all_department_gender_sum_year_json)
-    sp16_data = []
+    department_dict = {}
     for key, value in enumerate(all_department_gender_sum_year_json):
-        if value['Year'] in 'sp16':
+        if value['Year'] in department_dict.keys():
+            curr_list = department_dict[value['Year']]
             temp = {}
             temp['label'] = value['Department']
             temp['value'] = int(value['total'])
-            sp16_data.append(temp)
-    pprint.pprint(sp16_data)
+            curr_list.append(temp)
+            department_dict[value['Year']] = curr_list
+        else:
+            temp_list = []
+            temp = {}
+            temp['label'] = value['Department']
+            temp['value'] = int(value['total'])
+            temp_list.append(temp)
+            department_dict[value['Year']] = temp_list
 
-    return render_template('dashboard.html', pie_department_data = sp16_data)
+
+    # pprint.pprint(department_dict)
+
+    return render_template('dashboard.html', pie_department_data = department_dict, pie_major_data = major_dict)
 
 @app.route('/upload', methods=['GET','POST'])
 def upload():

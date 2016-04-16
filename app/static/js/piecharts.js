@@ -1,73 +1,238 @@
-function department_pie(data){
-  console.log(data);
-  var pie = new d3pie("pie", {
-        "size": {
-        "canvasHeight": 400,
-		"canvasWidth": 500,
-		"pieOuterRadius": "90%"
-	},
-  data:{
-    "sortOrder": "value-desc",
-    "content":data},
-  tooltips: {
-    enabled: true,
-    type: "placeholder",
-    string: "{label}: {percentage}%",
-    styles: {
-      fadeInSpeed: 500,
-      backgroundColor: "#00cc99",
-      backgroundOpacity: 0.8,
-      color: "#ffffcc",
-      borderRadius: 4,
-      font: "verdana",
-      fontSize: 20,
-      padding: 20
+var department_data = "";
+var major_data = "";
+var department_clicked = "Engineering";
+var year = "sp05";
+var major = "";
+var department_pie_viz = null;
+var major_pie_viz = null;
+
+function department_pie(data) {
+    department_data = data;
+    console.log(data);
+    if (department_pie_viz != null) {
+        department_pie_viz.destroy();
+        department_pie_viz = null;
     }
-  }
+    department_pie_viz = new d3pie("pie", {
+        "size": {
+            "canvasHeight": 400,
+            "canvasWidth": 500,
+            "pieOuterRadius": "90%"
+        },
+        data: {
+            "sortOrder": "value-desc",
+            "smallSegmentGrouping":{
+              "enabled" : true,
+                "value" : 2
+            },
+            "content": data[year]
+        },
+
+        callbacks: {
+            onClickSegment: function (data) {
+                department_clicked = data['data']['label'];
+                major_pie(major_data);
+            }
+        },
+        tooltips: {
+            enabled: true,
+            type: "placeholder",
+            string: "{label}: {percentage}%",
+            styles: {
+                fadeInSpeed: 500,
+                backgroundColor: "#00cc99",
+                backgroundOpacity: 0.8,
+                color: "#ffffcc",
+                borderRadius: 4,
+                font: "verdana",
+                fontSize: 20,
+                padding: 20
+            }
+        }
+    });
+
+}
+
+function major_pie(data) {
+    console.log(data);
+    major_data = data;
+    if (major_pie_viz != null) {
+        major_pie_viz.destroy();
+        major_pie_viz = null;
+    }
+    major_pie_viz = new d3pie("pie1", {
+        "size": {
+            "canvasHeight": 400,
+            "canvasWidth": 500,
+            "pieOuterRadius": "90%"
+        },
+        data: {
+            "sortOrder": "value-desc",
+            "smallSegmentGrouping":{
+              "enabled" : true,
+                "value" : 1
+            },
+            "content": data[year][department_clicked]
+        },
+        tooltips: {
+            enabled: true,
+            type: "placeholder",
+            string: "{label}: {percentage}%",
+            styles: {
+                fadeInSpeed: 500,
+                backgroundColor: "#00cc99",
+                backgroundOpacity: 0.8,
+                color: "#ffffcc",
+                borderRadius: 4,
+                font: "verdana",
+                fontSize: 20,
+                padding: 20
+            }
+        }
+    });
+
+}
+
+
+function set_slider() {
+    d3.select('#slider3').call(d3.slider()
+            .axis(true).min(2005).max(2016).step(0.5)
+        .on("slide", function(evt, value) {
+            console.log(value);
+            if(value % 1 != 0){
+                year = 'fa' + value.toString().split('.')[0].slice(-2);
+                department_pie(department_data);
+                major_pie(major_data);
+                document.getElementById('year_data').innerText  = year;
+            }
+            else{
+                year = 'sp' + value.toString().split('.')[0].slice(-2);
+                department_pie(department_data);
+                major_pie(major_data);
+                document.getElementById('year_data').innerText  = year;
+
+            }
+
+
+        })
+
+
+    );
+
+}
+
+
+// __________________________________________________________________________________________________________________________________________
+
+
+// Mike Bostock "margin conventions"
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+// D3 scales = just math
+// x is a function that transforms from "domain" (data) into "range" (usual pixels)
+// domain gets set after the data loads
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+// D3 Axis - renders a d3 scale in SVG
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10, "%");
+
+// create an SVG element (appended to body)
+// set size
+// add a "g" element (think "group")
+// annoying d3 gotcha - the 'svg' variable here is a 'g' element
+// the final line sets the transform on <g>, not on <svg>
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+
+svg.append("g")
+    .attr("class", "y axis")
+  .append("text") // just for the title (ticks are automatic)
+    .attr("transform", "rotate(-90)") // rotate the text!
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text("Frequency");
+
+// d3.tsv is a wrapper around XMLHTTPRequest, returns array of arrays (?) for a TSV file
+// type function transforms strings to numbers, dates, etc.
+d3.tsv("data.tsv", type, function(error, data) {
+  replay(data);
 });
 
+function type(d) {
+  // + coerces to a Number from a String (or anything)
+  d.frequency = +d.frequency;
+  return d;
 }
 
-function set_slider(){
-  d3.select('#slider3').call(d3.slider()
-  .axis(true).min(2004).max(2016).step(0.5)
-  // .on("slide", function(evt, value) {
-  //
-  //     console.log("here");
-  //     console.log(value);
-  //     if(value === 1999 || value === 2000){
-  //         $.ajax({ // ajax call for revision data for file is mades
-  //                 url: '/year',
-  //                 data: JSON.stringify({ // data that is sent to the flask server
-  //                     state: curr_state,
-  //                     year: value
-  //                 }),
-  //                 type: 'POST',
-  //                 contentType: 'application/json;charset=UTF-8',
-  //                 success: function(response) { // response that is sent back from the flask server
-  //                     if (response['msg'] === 'YES') {
-  //                         console.log("PRINTING AJAX RESPONSE");
-  //                         console.log("YES");
-  //                         console.log(response);
-  //
-  //
-  //                         //$('#slider3').empty();
-  //                         started = true;
-  //                         init(response['data'], response['min'], response['max']);
-  //                         $("#info span").text("Total Number of Immigrants : " + response['total']);
-  //                     }
-  //                 },
-  //                 dataType: "json",
-  //                 error: function(error) {
-  //                     console.log("ERROR")
-  //                     console.log(error); // log error on invalid ajax request
-  //                 }
-  //             });
-  //
-  //     }})
-
-
-  );
-
+function replay(data) {
+  var slices = [];
+  for (var i = 0; i < data.length; i++) {
+    slices.push(data.slice(0, i+1));
+  }
+  slices.forEach(function(slice, index){
+    setTimeout(function(){
+      draw(slice);
+    }, index * 300);
+  });
 }
 
+function draw(data) {
+  // measure the domain (for x, unique letters) (for y [0,maxFrequency])
+  // now the scales are finished and usable
+  x.domain(data.map(function(d) { return d.letter; }));
+  y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+
+  // another g element, this time to move the origin to the bottom of the svg element
+  // someSelection.call(thing) is roughly equivalent to thing(someSelection[i])
+  //   for everything in the selection\
+  // the end result is g populated with text and lines!
+  svg.select('.x.axis').transition().duration(300).call(xAxis);
+
+  // same for yAxis but with more transform and a title
+  svg.select(".y.axis").transition().duration(300).call(yAxis)
+
+  // THIS IS THE ACTUAL WORK!
+  var bars = svg.selectAll(".bar").data(data, function(d) { return d.letter; }) // (data) is an array/iterable thing, second argument is an ID generator function
+
+  bars.exit()
+    .transition()
+      .duration(300)
+    .attr("y", y(0))
+    .attr("height", height - y(0))
+    .style('fill-opacity', 1e-6)
+    .remove();
+
+  // data that needs DOM = enter() (a set/selection, not an event!)
+  bars.enter().append("rect")
+    .attr("class", "bar")
+    .attr("y", y(0))
+    .attr("height", height - y(0));
+
+  // the "UPDATE" set:
+  bars.transition().duration(300).attr("x", function(d) { return x(d.letter); }) // (d) is one item from the data array, x is the scale object from above
+    .attr("width", x.rangeBand()) // constant, so no callback function(d) here
+    .attr("y", function(d) { return y(d.frequency); })
+    .attr("height", function(d) { return height - y(d.frequency); }); // flip the height, because y's domain is bottom up, but SVG renders top down
+
+}
