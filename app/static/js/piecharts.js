@@ -236,7 +236,7 @@ function ethinicity_line(ethinicity) {
 
         bars.exit()
             .transition()
-            .duration(300)
+            .duration(100)
             .attr("y", y(0))
             .attr("height", height - y(0))
             .style('fill-opacity', 1e-6)
@@ -251,7 +251,7 @@ function ethinicity_line(ethinicity) {
             .on('mouseout', tip.hide);
 
         // the "UPDATE" set:
-        bars.transition().duration(300).attr("x", function (d) {
+        bars.transition().duration(100).attr("x", function (d) {
             return x(d.label);
         }) // (d) is one item from the data array, x is the scale object from above
             .attr("width", x.rangeBand()) // constant, so no callback function(d) here
