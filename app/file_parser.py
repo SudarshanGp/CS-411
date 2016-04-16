@@ -204,7 +204,7 @@ def writeDel(file_name, db_name, insType, first):
     f.close()
 
 def main():
-    dbName = "db4"
+    dbName = "db5"
 
     fileloc=CurrentDir+str(sys.argv[1])
     file_name = str(sys.argv[1])[:-4]+".sql"
