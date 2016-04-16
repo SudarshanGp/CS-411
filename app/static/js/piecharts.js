@@ -1,7 +1,7 @@
 var department_data = "";
 var major_data = "";
 var department_clicked = "Engineering";
-var year = "sp05";
+var year = "fa04";
 var major = "Computer Science";
 var department_pie_viz = null;
 var major_pie_viz = null;
@@ -84,20 +84,31 @@ function major_pie(data) {
 
 function set_slider() {
     d3.select('#slider3').call(d3.slider()
-            .axis(true).min(2005).max(2016).step(0.5)
+            .axis(true).min(2004.5).max(2016).step(0.5)
         .on("slide", function(evt, value) {
             console.log(value);
             if(value % 1 != 0){
                 year = 'fa' + value.toString().split('.')[0].slice(-2);
-                department_pie(department_data);
-                major_pie(major_data);
-                document.getElementById('year_data').innerText  = year;
+                if (department_data[year] === undefined) {
+                    document.getElementById('year_data').innerText = "YEAR NOT FOUND : " + year;
+                }
+                else {
+                    department_pie(department_data);
+                    major_pie(major_data);
+                    document.getElementById('year_data').innerText = year;
+                }
             }
             else{
                 year = 'sp' + value.toString().split('.')[0].slice(-2);
-                department_pie(department_data);
-                major_pie(major_data);
-                document.getElementById('year_data').innerText  = year;
+                console.log(year);
+                if (department_data[year] === undefined) {
+                    document.getElementById('year_data').innerText = "YEAR NOT FOUND : " + year;
+                }
+                else {
+                    department_pie(department_data);
+                    major_pie(major_data);
+                    document.getElementById('year_data').innerText = year;
+                }
 
             }
 
