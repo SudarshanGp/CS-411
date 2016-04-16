@@ -5,23 +5,14 @@ import itertools
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.linalg
-import pandas as pd
-import seaborn as sns
 from matplotlib.pyplot import *
-from numpy.random import normal
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
-from scipy.optimize import curve_fit
-#from scipy import stats
-
-
+#from numpy.random import normal
+#from scipy.optimize import curve_fit
 
 
 def f(x, m, b):
     return m*x+b
-    
-def func(x, a, b, c, d):
-    return a * np.sin(b*x + c) + d
+
 def dictfetchall(cursor):
     """Returns all rows from a cursor as a list of dicts"""
     desc = cursor.description
@@ -50,15 +41,14 @@ def main():
             termdict[term]={}
             termdict[term][i['Major']]=int(i['Female'])
         
-        #major.append(i['Major'])
-        #termdict[term][i['Major']]=int(i['Female'])
-        #females.append(int(i['Female']))
+        
     templist=[]
     
     #for i in termdict.keys():
     #    for j in termdict[i]:
     #        if j == "Computer Science":
     #            print (str(i)+"\t"+str(j)+"\t"+str(termdict[i][j]))
+    
     for i in termdict.keys():
         for j in termdict[i]:
             major[j]=[]
@@ -68,32 +58,14 @@ def main():
     
     yearstemp=[]
     femalestemp=[]
-    #print major
+    newdict={}
+    
     majInf=[]
     for i in major.keys():
         majInf=np.array(major[i])
         year = majInf[:,0] #x
         val = majInf[:,1] #y
-        # Encapsulate our test data
-        #df = pd.DataFrame({'x': year, 'y': val})
-
-        # Implement simple regression: Result ~ Input
-        # First we fit slope and intercept
-        #result = smf.ols(formula='y ~ x', data=df).fit()
-        #ax = sns.regplot('x', 'y', df, fit_reg=False, color='blue')
-
-        # We pick 100 hundred points equally spaced from the min to the max
-        #xfpd = pd.DataFrame({'xfpd': np.linspace(0, 1, 50)})
-
-        #yfi = result.predict(xfpd)
-
-        #plt.plot(xfpd['xfpd'], yfi, color='red', label='y = mx + b')
-
-        #ax.set(xlabel='X', ylabel='Y', title='Regression Comparison')
-        #ax.legend(loc=4)
-        #sns.despine(offset=0, trim=True)
-        #plt.show()
-       
+ 
         A = np.array([1+0*year, year]).T
         Q,R = np.linalg.qr(A,"complete")
         M=np.vander(year)
@@ -102,50 +74,18 @@ def main():
         a_c,b_c = x
         plt.plot(year,val,'o')
         pltgrid = np.linspace(400,2000,50)
-        plt.plot(pltgrid, f(pltgrid, b_c, a_c),'b-', label='fit')
-        plt.show()  
+        new_y=f(pltgrid, b_c, a_c)
+        new_x=pltgrid
         
-        #coefficients = np.polyfit(year, val, 6)
-        #polynomial = np.poly1d(coefficients)
-        #xs = np.arange(min(year), max(year), 0.1)
-        #ys = polynomial(xs)
-
-        #plt.plot(year, val, 'o')
-        #plt.plot(xs, ys)
+        newdict[i]=[]
+        newdict[i].append(new_x)
+        newdict[i].append(new_y)
         
-        #slope, intercept, r_val, p_val, std_err = stats.linregress(year, val)
-        #plt.plot(year, f(year, slope, intercept),'b-', label = 'fit')
-        #plt.show()
-
-
-        #parameter, covariance_matrix = curve_fit(func, year, val)
-        #x = np.linspace(min(year), max(year), 1000)
-        #plt.plot(year, val, 'rx', label='data')
-        #plt.plot(x, func(x, *parameter), 'b-', label='fit')   # the star is to unpack the parameter array
-        #plt.show()
-      
-        #print M
-        #a= np.linalg.solve(M,val)
-        #time = np.linspace(400, 2000, 10)
-        #p= np.polyval(a,time)
-        #plt.plot(year,val,'o',time,p,'-')
-        #plt.show()
-        #print year
-        #print val
+        #plt.plot(pltgrid, f(pltgrid, b_c, a_c),'b-', label='fit')
+        #plt.show()  
+    print newdict
         
-    #    for j in major[i]:
-    #        print j
-    #    for j in i:
-    #        print j
-        
-        
-    #print termdict
-    
-    #regs={}
-    #for i in major:
-    #    regs[major[[i]]=
-        
-    
+   
 
 
 if __name__ == '__main__':
