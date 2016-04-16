@@ -187,15 +187,7 @@ def executeScriptsFromFile(filename):
     fd.close()
     cursor.execute(sqlFile)
     db.commit()
-    # # Execute every command from the input file
-    # for command in sqlCommands:
-    #     # This will skip and report errors
-    #     # For example, if the tables do not yet exist, this will skip over
-    #     # the DROP TABLE commands
-    #     try:
-    #         cursor.execute(command)
-    #     except OperationalError, msg:
-    #         print "Command skipped: ", msg
+
 
 if __name__ == '__main__':
     db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', db = 'db')
