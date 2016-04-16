@@ -219,4 +219,4 @@ if __name__ == '__main__':
     db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', db = 'db')
     cursor = db.cursor()
 
-    app.run(debug=True)
+    app.run(debug=True, host = '0.0.0.0')
