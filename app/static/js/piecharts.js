@@ -15,8 +15,8 @@ function department_pie(data) {
     }
     department_pie_viz = new d3pie("pie", {
         "size": {
-            "canvasHeight": 400,
-            "canvasWidth": 500,
+            "canvasHeight": 375,
+            "canvasWidth": 600,
             "pieOuterRadius": "90%"
         },
         data: {
@@ -34,21 +34,11 @@ function department_pie(data) {
                 major_pie(major_data);
             }
         },
-        tooltips: {
-            enabled: true,
-            type: "placeholder",
-            string: "{label}: {percentage}%",
-            styles: {
-                fadeInSpeed: 500,
-                backgroundColor: "#00cc99",
-                backgroundOpacity: 0.8,
-                color: "#ffffcc",
-                borderRadius: 4,
-                font: "verdana",
-                fontSize: 20,
-                padding: 20
-            }
-        }
+        "tooltips": {
+		"enabled": true,
+		"type": "placeholder",
+		"string": "{label}: {value}, {percentage}%"
+	    }
     });
 
 }
@@ -62,8 +52,8 @@ function major_pie(data) {
     }
     major_pie_viz = new d3pie("pie1", {
         "size": {
-            "canvasHeight": 400,
-            "canvasWidth": 500,
+            "canvasHeight": 375,
+            "canvasWidth": 600,
             "pieOuterRadius": "90%"
         },
         data: {
@@ -74,21 +64,11 @@ function major_pie(data) {
             },
             "content": data[year][department_clicked]
         },
-        tooltips: {
-            enabled: true,
-            type: "placeholder",
-            string: "{label}: {percentage}%",
-            styles: {
-                fadeInSpeed: 500,
-                backgroundColor: "#00cc99",
-                backgroundOpacity: 0.8,
-                color: "#ffffcc",
-                borderRadius: 4,
-                font: "verdana",
-                fontSize: 20,
-                padding: 20
-            }
-        }
+        "tooltips": {
+		"enabled": true,
+		"type": "placeholder",
+		"string": "{label}: {value}, {percentage}%"
+	    }
     });
 
 }
