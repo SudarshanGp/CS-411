@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import sys
+from sqlite3 import OperationalError
 
 sys.path.insert(2, '/usr/local/lib/python2.7/site-packages')
 from flask import Flask, render_template, request, jsonify,send_from_directory, redirect
@@ -44,6 +45,13 @@ def upload():
         if file:
             filename = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            print filename
+            python_command = "python " + "file_parser.py" + " " + filename
+            os.system(python_command)
+            file_split = filename.split('.')
+            sql_file = file_split[0] + ".sql"
+            print sql_file
+            executeScriptsFromFile(sql_file)
             return render_template('dashboard.html')
         else:
             return render_template('upload.html', message = "File not able to upload")
@@ -54,8 +62,25 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
 
+def executeScriptsFromFile(filename):
+    # Open and read the file as a single buffer
+    fd = open(filename, 'r')
+    sqlFile = fd.read()
+    fd.close()
+    cursor.execute(sqlFile)
+    db.commit()
+    # # Execute every command from the input file
+    # for command in sqlCommands:
+    #     # This will skip and report errors
+    #     # For example, if the tables do not yet exist, this will skip over
+    #     # the DROP TABLE commands
+    #     try:
+    #         cursor.execute(command)
+    #     except OperationalError, msg:
+    #         print "Command skipped: ", msg
+
 if __name__ == '__main__':
-    db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', db = 'db3')
+    db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', db = 'db5')
     cursor = db.cursor()
 
     app.run(debug=True)
