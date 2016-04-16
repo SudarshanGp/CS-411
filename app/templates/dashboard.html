@@ -3,10 +3,12 @@
     <script>
     $( document ).ready(function() {
         department_pie({{ pie_department_data | safe }});
+        set_slider();
     });
     </script>
     <a class="btn waves-effect waves-light pink accent-3 right" href='/upload'style="margin-top: 15px; margin-right: 15px;align-content: center;">Upload File</a>
     <div class = "container">
+        <div id="slider3"></div>
         <div id = "pie" d3pie ="0.1.6"></div>
     </div>
 
