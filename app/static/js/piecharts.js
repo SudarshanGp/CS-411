@@ -1,7 +1,7 @@
 var department_data = "";
 var major_data = "";
 var department_clicked = "Engineering";
-var year = "sp05";
+var year = "fa04";
 var major = "Computer Science";
 var department_pie_viz = null;
 var major_pie_viz = null;
@@ -33,6 +33,7 @@ function department_pie(data) {
         callbacks: {
             onClickSegment: function (data) {
                 department_clicked = data['data']['label'];
+                document.getElementById('department_data').innerText = department_clicked;
                 major_pie(major_data);
             }
         },
@@ -74,6 +75,8 @@ function major_pie(data) {
         callbacks: {
             onClickSegment: function (data) {
                 major = data['data']['label'];
+                document.getElementById('major_data').innerText = major;
+                document.getElementById('ethinicity_data').innerText = "Ethnicity for " + major ;
                 ethinicity_line(ethinicity_data);
             }
         },
@@ -84,20 +87,43 @@ function major_pie(data) {
 
 function set_slider() {
     d3.select('#slider3').call(d3.slider()
-            .axis(true).min(2005).max(2016).step(0.5)
+            .axis(true).min(2004.5).max(2016).step(0.5)
         .on("slide", function(evt, value) {
             console.log(value);
             if(value % 1 != 0){
                 year = 'fa' + value.toString().split('.')[0].slice(-2);
-                department_pie(department_data);
-                major_pie(major_data);
-                document.getElementById('year_data').innerText  = year;
+                if (department_data[year] === undefined) {
+                    document.getElementById('year_data').innerText = "YEAR NOT FOUND : " + year;
+                }
+                else {
+                    department_pie(department_data);
+                    major_pie(major_data);
+                    department_clicked = "Engineering";
+                    major = "Computer Science";
+                    ethinicity_line(ethinicity_data);
+                    document.getElementById('department_data').innerText = department_clicked;
+                    document.getElementById('ethinicity_data').innerText = "Ethnicity for " + major ;
+                    document.getElementById('major_data').innerText = "Computer Science";
+                    document.getElementById('year_data').innerText = year;
+                }
             }
             else{
                 year = 'sp' + value.toString().split('.')[0].slice(-2);
-                department_pie(department_data);
-                major_pie(major_data);
-                document.getElementById('year_data').innerText  = year;
+                console.log(year);
+                if (department_data[year] === undefined) {
+                    document.getElementById('year_data').innerText = "YEAR NOT FOUND : " + year;
+                }
+                else {
+                    department_pie(department_data);
+                    major_pie(major_data);
+                    department_clicked = "Engineering";
+                    major = "Computer Science";
+                    ethinicity_line(ethinicity_data);
+                    document.getElementById('department_data').innerText = department_clicked;
+                    document.getElementById('ethinicity_data').innerText = "Ethnicity for " + major ;
+                    document.getElementById('major_data').innerText = "Computer Science";
+                    document.getElementById('year_data').innerText = year;
+                }
 
             }
 
@@ -210,7 +236,7 @@ function ethinicity_line(ethinicity) {
 
         bars.exit()
             .transition()
-            .duration(300)
+            .duration(100)
             .attr("y", y(0))
             .attr("height", height - y(0))
             .style('fill-opacity', 1e-6)
@@ -225,7 +251,7 @@ function ethinicity_line(ethinicity) {
             .on('mouseout', tip.hide);
 
         // the "UPDATE" set:
-        bars.transition().duration(300).attr("x", function (d) {
+        bars.transition().duration(100).attr("x", function (d) {
             return x(d.label);
         }) // (d) is one item from the data array, x is the scale object from above
             .attr("width", x.rangeBand()) // constant, so no callback function(d) here
