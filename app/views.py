@@ -4,7 +4,7 @@ import sys
 from sqlite3 import OperationalError
 
 sys.path.insert(2, '/usr/local/lib/python2.7/site-packages')
-from flask import Flask, render_template, request, jsonify,send_from_directory, redirect
+from flask import Flask, render_template, request, jsonify,send_from_directory, redirect, url_for
 import pymysql, json
 import itertools
 import pprint
@@ -46,13 +46,21 @@ def upload():
             filename = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             print filename
-            python_command = "python " + "file_parser.py" + " " + filename
-            os.system(python_command)
             file_split = filename.split('.')
             sql_file = file_split[0] + ".sql"
-            print sql_file
-            executeScriptsFromFile(sql_file)
-            return render_template('dashboard.html')
+            if "rm" in filename.lower():
+                if os.path.isfile(sql_file):
+                    executeScriptsFromFile(sql_file)
+                else:
+                    print "file does not exist"
+            else:
+                python_command = "python " + "file_parser.py" + " " + filename
+                os.system(python_command)
+                file_split = filename.split('.')
+                sql_file = file_split[0] + ".sql"
+                print sql_file
+                executeScriptsFromFile(sql_file)
+            return redirect(url_for('dashboard'))
         else:
             return render_template('upload.html', message = "File not able to upload")
     return render_template('upload.html', message = "No file uploaded")
