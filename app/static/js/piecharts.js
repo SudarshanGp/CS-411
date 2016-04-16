@@ -38,9 +38,12 @@ function department_pie(data) {
             }
         },
         "tooltips": {
-		"enabled": true,
-		"type": "placeholder",
-		"string": "{label}: {value}, {percentage}%"
+            "enabled": true,
+            "type": "placeholder",
+            "string": "{label}: {value}, {percentage}%",
+            styles: {
+                fontSize:15
+            }
 	    }
     });
 
@@ -68,9 +71,12 @@ function major_pie(data) {
             "content": data[year][department_clicked]
         },
         "tooltips": {
-		"enabled": true,
-		"type": "placeholder",
-		"string": "{label}: {value}, {percentage}%"
+            "enabled": true,
+            "type": "placeholder",
+            "string": "{label}: {value}, {percentage}%",
+            styles: {
+                fontSize:15
+            }
 	    },
         callbacks: {
             onClickSegment: function (data) {
