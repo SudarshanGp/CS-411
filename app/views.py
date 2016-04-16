@@ -68,12 +68,14 @@ def dashboard():
             temp_list = []
             temp_list.append({'label' : 'African American', 'value' : value['AfAm']})
             temp_list.append({'label' : 'Asian', 'value' : value['Asian']})
+            temp_list.append({'label': 'Multi Racial', 'value': value['Multi']})
+
             temp_list.append({'label': 'Foreigner', 'value': value['Foreigner']})
             temp_list.append({'label': 'Hispanic', 'value': value['Hisp']})
-            temp_list.append({'label': 'Multi Racial', 'value': value['Multi']})
             temp_list.append({'label': 'Native American', 'value': value['NativeAmAl']})
-            temp_list.append({'label': 'Native Hawaiian', 'value': value['NativeHaw']})
             temp_list.append({'label': 'White', 'value': value['White']})
+            temp_list.append({'label': 'Native Hawaiian', 'value': value['NativeHaw']})
+
             temp_list.append({'label': 'Other', 'value': value['Other']})
             if value['Department'] in ethinicity_dict[value['Year']].keys():
                 ethinicity_dict[value['Year']][value['Department']][value['Major']] = temp_list
@@ -86,20 +88,38 @@ def dashboard():
             temp_list = []
             temp_list.append({'label': 'African American', 'value': value['AfAm']})
             temp_list.append({'label': 'Asian', 'value': value['Asian']})
+            temp_list.append({'label': 'Multi Racial', 'value': value['Multi']})
             temp_list.append({'label': 'Foreigner', 'value': value['Foreigner']})
             temp_list.append({'label': 'Hispanic', 'value': value['Hisp']})
-            temp_list.append({'label': 'Multi Racial', 'value': value['Multi']})
             temp_list.append({'label': 'Native American', 'value': value['NativeAmAl']})
-            temp_list.append({'label': 'Native Hawaiian', 'value': value['NativeHaw']})
             temp_list.append({'label': 'White', 'value': value['White']})
+            temp_list.append({'label': 'Native Hawaiian', 'value': value['NativeHaw']})
             temp_list.append({'label': 'Other', 'value': value['Other']})
             ethinicity_dict[value['Year']][value['Department']][value['Major']] = temp_list
 
+    gender_dict = {}
+    for key, value in enumerate(get_gender_all_years_json):
+        if value['Year'] in gender_dict.keys():
+            # if value['Department'] in ethinicity_dict[value['Year']]:
+            temp_list = []
+            temp_list.append({'label': 'Male', 'value': value['Male']})
+            temp_list.append({'label': 'Female', 'value': value['Female']})
+            temp_list.append({'label': 'Other', 'value': value['Other']})
 
-    # pprint.pprint(get_ethinicity_all_years_json)
-    # pprint.pprint(get_department_names_json)
-    # pprint.pprint(get_gender_all_years_json)
-    # pprint.pprint(get_gender_sum_json)
+            if value['Department'] in gender_dict[value['Year']].keys():
+                gender_dict[value['Year']][value['Department']][value['Major']] = temp_list
+            else:
+                gender_dict[value['Year']][value['Department']] = {}
+                gender_dict[value['Year']][value['Department']][value['Major']] = temp_list
+        else:
+            gender_dict[value['Year']] = {}
+            gender_dict[value['Year']][value['Department']] = {}
+            temp_list = []
+            temp_list.append({'label': 'Male', 'value': value['Male']})
+            temp_list.append({'label': 'Female', 'value': value['Female']})
+            temp_list.append({'label': 'Other', 'value': value['Other']})
+            gender_dict[value['Year']][value['Department']][value['Major']] = temp_list
+
     major_dict = {} # Enrollment by Major
     for key, value in enumerate(get_gender_sum_json):
         if value['Year'] in major_dict.keys():
@@ -127,7 +147,6 @@ def dashboard():
             # major_dict[value['Year']] = temp_list
 
 
-    # pprint.pprint(all_department_gender_sum_year_json)
     department_dict = {} # Enrollment by department
     for key, value in enumerate(all_department_gender_sum_year_json):
         if value['Year'] in department_dict.keys():
@@ -146,7 +165,7 @@ def dashboard():
             department_dict[value['Year']] = temp_list
 
 
-    return render_template('dashboard.html', pie_department_data = department_dict, pie_major_data = major_dict, ethinicity_data = ethinicity_dict)
+    return render_template('dashboard.html', pie_department_data = department_dict, pie_major_data = major_dict, ethinicity_data = ethinicity_dict, gender_data = gender_dict)
 
 @app.route('/upload', methods=['GET','POST'])
 def upload():
