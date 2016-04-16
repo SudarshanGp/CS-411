@@ -53,55 +53,6 @@ def upload():
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
-@app.route('/addpassword', methods=['GET', 'POST'])
-def addpassword():
-    inUse = request.form['username']
-    inPass = request.form['password']
-    check = "SELECT * FROM db.LoginInfo WHERE Username = %s"
-    cursor.execute(check,(inUse))
-    db.commit()
-    if(cursor.rowcount == 0):
-        insertLog = "INSERT INTO db.LoginInfo VALUES(%s,%s)"
-        cursor.execute(insertLog, (inUse, inPass))
-        db.commit()
-    else:
-        print "oops, username taken"
-        desc = cursor.description
-        r = cursor.fetchall()
-        print r[0][1]
-        if inPass in r[0][1]:
-            return render_template('base_no_login.html',data =render_data)
-        else:
-            return render_template('base.html',data =render_data)
-    return render_template('base_no_login.html',data =render_data)
-
-@app.route('/forgotpasswordreset', methods=['GET', 'POST'])
-def forgotpassword():
-    inUse = request.form['username']
-    inPass = request.form['password']
-    print inUse, inPass
-    check = "SELECT * FROM db.LoginInfo WHERE Username = %s"
-    cursor.execute(check,(inUse))
-    print "finished select"
-    if(cursor.rowcount == 0):
-        insertLog = "INSERT INTO db.LoginInfo VALUES(%s,%s)"
-        cursor.execute(insertLog, (inUse, inPass))
-        db.commit()
-    else:
-        print "in update"
-        insertLog = "UPDATE db.LoginInfo SET Password = %s WHERE Username = %s"
-        cursor.execute(insertLog, (inPass, inUse))
-        db.commit()
-    return render_template('base_no_login.html',data =render_data)
-
-@app.route('/forgotpassword')
-def forgotpage():
-    return render_template('forgotpassword.html',data =render_data)
-
 
 if __name__ == '__main__':
     db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', db = 'db3')
