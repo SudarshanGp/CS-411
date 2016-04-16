@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 
     <head>
@@ -10,6 +10,14 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='css/materialize.css') }}"  media="screen,projection"/>
         <link href="{{ url_for('static',filename='css/style.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link href="{{ url_for('static',filename='d3-slider/d3.slider.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js"></script>
+        <script src="{{ url_for('static',filename='js/materialize.js') }}"></script>
+        <script src="{{ url_for('static',filename='js/d3pie.js') }}"></script>
+        <script src="{{ url_for('static',filename='js/piecharts.js') }}"></script>
+        <script src="{{ url_for('static',filename='d3-slider/d3.slider.js') }}"></script>
+        <script src="{{ url_for('static',filename='js/piecharts.js') }}"></script>
         <div class="navbar-fixed">
         <nav class = " blue darken-4">
           <div class="nav-wrapper">
@@ -21,6 +29,7 @@
           </div>
         </nav>
       </div>
+
     </head>
 <body>
 {% block data %}
@@ -36,10 +45,6 @@
     </div>
 </div>
 {%  endblock %}
-        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script src="{{ url_for('static',filename='js/materialize.js') }}"></script>
-        <script src="{{ url_for('static',filename='js/init.js') }}"></script>
-        <script src="{{ url_for('static',filename='js/d3pie.js') }}"></script>
-        <script src="{{ url_for('static',filename='js/piecharts.js') }}"></script>
+
 </body>
 </html>
