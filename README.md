@@ -1,2 +1,2 @@
 # CS-411
-Visualzing UIUC Demographic Data
+Visualizing UIUC Demographic Data
