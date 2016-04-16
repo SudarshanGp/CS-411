@@ -1,1 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
+**.DS_Store
+**.swp
+**.idea
+*.idea
+**.png
+**.pdf
