@@ -17,6 +17,14 @@ cursor = ""
 render_data = []
 render_data1 = []
 
+
+def dictfetchall(cursor):
+    """Returns all rows from a cursor as a list of dicts"""
+    desc = cursor.description
+    return [dict(itertools.izip([col[0] for col in desc], row))
+            for row in cursor.fetchall()]
+
+
 @app.route('/')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
@@ -36,6 +44,35 @@ def dashboard():
         if file:
             filename = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    get_departments_names = "SELECT DISTINCT Department from db5.id;"
+    cursor.execute(get_departments_names)
+    get_department_names_json = dictfetchall(cursor)
+    get_gender_all_years = "SELECT db5.id.Year, db5.id.Department, db5.id.Major, Male, Female, Other FROM db5.Gender INNER JOIN db5.id ON db5.id.ID = db5.Gender.ID ;"
+    cursor.execute(get_gender_all_years)
+    get_gender_all_years_json = dictfetchall(cursor)
+    get_gender_sum = "SELECT db5.id.Year, db5.id.Department, db5.id.Major, (Male+ Female+Other) AS major_sum FROM db5.Gender INNER JOIN db5.id ON db5.id.ID = db5.Gender.ID ;"
+    cursor.execute(get_gender_sum)
+    get_gender_sum_json = dictfetchall(cursor)
+    all_department_gender_sum_year = "SELECT a.Department, a.Year, SUM(a.major_sum) as total\
+            FROM (SELECT db5.id.Year, db5.id.Department, db5.id.Major, (Male+ Female+Other) AS major_sum FROM db5.Gender INNER JOIN db5.id ON db5.id.ID = db5.Gender.ID ) a \
+            GROUP BY a.Department, a.Year;"
+    cursor.execute(all_department_gender_sum_year)
+    all_department_gender_sum_year_json = dictfetchall(cursor)
+
+    # pprint.pprint(get_department_names_json)
+    # pprint.pprint(get_gender_all_years_json)
+    # pprint.pprint(get_gender_sum_json)
+
+    # pprint.pprint(all_department_gender_sum_year_json)
+    sp16_data = []
+    for key, value in enumerate(all_department_gender_sum_year_json):
+        if value['Year'] in 'sp16':
+            temp = {}
+            temp['label'] = value['Department']
+            temp['value'] = int(value['total'])
+            sp16_data.append(temp)
+    pprint.pprint(sp16_data)
+
     return render_template('dashboard.html')
 
 @app.route('/upload', methods=['GET','POST'])
