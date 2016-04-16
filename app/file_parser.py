@@ -8,7 +8,7 @@ import sys  #getting sys arguments
 import os #for getting cwd
 import pymysql
 
-db_name = 'Demo.db'
+# db_name = 'Demo.db'
 CurrentDir= os.getcwd()+"/static/res/"
 cursor = ""
 # /Users/Aadhya/GitHub
@@ -92,7 +92,7 @@ def FilePar(fileloc, datb):
     retCounter=0
     dep = 0
     counter = 0
-    db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', db = 'db')
+    db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', db = 'dummy')
     cursor = db.cursor()
     check="SHOW DATABASES LIKE '"+datb+"';"
     cursor.execute(check) # for ID
@@ -161,10 +161,55 @@ def FilePar(fileloc, datb):
 						Residency[j][0]+=current_sheet.cell(i,23).value
 					if(type(current_sheet.cell(i,24).value) is float):
 						Residency[j][1]+=current_sheet.cell(i,24).value
+					if j ==61:
+						print i
+						print maj
+						print dep-1
+						print Departmentlist[dep-1]
+						print Department[Departmentlist[dep-1]][maj]
 				else:
 					Gender[tempc]=[0,0,0]
 					Ethnicity[tempc]=[0,0,0,0,0,0,0,0,0]
 					Residency[tempc]=[0,0]
+					j=tempc
+					if(type(current_sheet.cell(i,9).value) is float):
+						Gender[j][0]+=current_sheet.cell(i,9).value
+					if(type(current_sheet.cell(i,10).value) is float):
+						Gender[j][1]+=current_sheet.cell(i,10).value
+					if(type(current_sheet.cell(i,9).value) is float):
+						Gender[j][2]+=current_sheet.cell(i,11).value
+
+					if(type(current_sheet.cell(i,12).value) is float):
+						Ethnicity[j][0]+=current_sheet.cell(i,12).value
+					if(type(current_sheet.cell(i,13).value) is float):
+						Ethnicity[j][1]+=current_sheet.cell(i,13).value
+					if(type(current_sheet.cell(i,14).value) is float):
+						Ethnicity[j][2]+=current_sheet.cell(i,14).value
+					if(type(current_sheet.cell(i,15).value) is float):
+						Ethnicity[j][3]+=current_sheet.cell(i,15).value
+					if(type(current_sheet.cell(i,16).value) is float):
+						Ethnicity[j][4]+=current_sheet.cell(i,16).value
+					if(type(current_sheet.cell(i,17).value) is float):
+						Ethnicity[j][5]+=current_sheet.cell(i,17).value
+					if(type(current_sheet.cell(i,18).value) is float):
+						Ethnicity[j][6]+=current_sheet.cell(i,18).value
+					if(type(current_sheet.cell(i,19).value) is float):
+						Ethnicity[j][7]+=current_sheet.cell(i,19).value
+					if(type(current_sheet.cell(i,20).value) is float):
+						Ethnicity[j][8]+=current_sheet.cell(i,20).value
+
+					if(type(current_sheet.cell(i,23).value) is float):
+						Residency[j][0]+=current_sheet.cell(i,23).value
+					if(type(current_sheet.cell(i,24).value) is float):
+						Residency[j][1]+=current_sheet.cell(i,24).value
+
+					if j ==61:
+						print i
+						print maj
+						print dep-1
+						print Departmentlist[dep-1]
+						print Department[Departmentlist[dep-1]][maj]
+
     return Department,Gender,Ethnicity,Residency, retCounter
 
 def writeInsert(file_name, db_name, list, insType, first):
@@ -204,7 +249,7 @@ def writeDel(file_name, db_name, insType, first):
     f.close()
 
 def main():
-    dbName = "db5"
+    dbName = "db"
 
     fileloc=CurrentDir+str(sys.argv[1])
     file_name = str(sys.argv[1])[:-4]+".sql"
@@ -228,7 +273,7 @@ def main():
     for key in Department:
         for val in Department[key]:
         	temp=[]
-        	temp.append(str(count))
+        	temp.append(str(Department[key][val]))
         	temp.append('"'+str(sys.argv[1])[:-4]+'"')
         	temp.append(key)
         	temp.append(val)
