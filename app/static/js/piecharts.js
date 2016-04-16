@@ -33,6 +33,7 @@ function department_pie(data) {
         callbacks: {
             onClickSegment: function (data) {
                 department_clicked = data['data']['label'];
+                document.getElementById('department_data').innerText = department_clicked;
                 major_pie(major_data);
             }
         },
@@ -74,6 +75,8 @@ function major_pie(data) {
         callbacks: {
             onClickSegment: function (data) {
                 major = data['data']['label'];
+                document.getElementById('major_data').innerText = major;
+                document.getElementById('ethinicity_data').innerText = "Ethnicity for " + major ;
                 ethinicity_line(ethinicity_data);
             }
         },
@@ -95,6 +98,12 @@ function set_slider() {
                 else {
                     department_pie(department_data);
                     major_pie(major_data);
+                    department_clicked = "Engineering";
+                    major = "Computer Science";
+                    ethinicity_line(ethinicity_data);
+                    document.getElementById('department_data').innerText = department_clicked;
+                    document.getElementById('ethinicity_data').innerText = "Ethnicity for " + major ;
+                    document.getElementById('major_data').innerText = "Computer Science";
                     document.getElementById('year_data').innerText = year;
                 }
             }
@@ -107,6 +116,12 @@ function set_slider() {
                 else {
                     department_pie(department_data);
                     major_pie(major_data);
+                    department_clicked = "Engineering";
+                    major = "Computer Science";
+                    ethinicity_line(ethinicity_data);
+                    document.getElementById('department_data').innerText = department_clicked;
+                    document.getElementById('ethinicity_data').innerText = "Ethnicity for " + major ;
+                    document.getElementById('major_data').innerText = "Computer Science";
                     document.getElementById('year_data').innerText = year;
                 }
 
