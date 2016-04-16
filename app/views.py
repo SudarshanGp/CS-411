@@ -44,17 +44,17 @@ def dashboard():
         if file:
             filename = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    get_departments_names = "SELECT DISTINCT Department from db5.id;"
+    get_departments_names = "SELECT DISTINCT Department from db.id;"
     cursor.execute(get_departments_names)
     get_department_names_json = dictfetchall(cursor)
-    get_gender_all_years = "SELECT db5.id.Year, db5.id.Department, db5.id.Major, Male, Female, Other FROM db5.Gender INNER JOIN db5.id ON db5.id.ID = db5.Gender.ID ;"
+    get_gender_all_years = "SELECT db.id.Year, db.id.Department, db.id.Major, Male, Female, Other FROM db.Gender INNER JOIN db.id ON db.id.ID = db.Gender.ID ;"
     cursor.execute(get_gender_all_years)
     get_gender_all_years_json = dictfetchall(cursor)
-    get_gender_sum = "SELECT db5.id.Year, db5.id.Department, db5.id.Major, (Male+ Female+Other) AS major_sum FROM db5.Gender INNER JOIN db5.id ON db5.id.ID = db5.Gender.ID ;"
+    get_gender_sum = "SELECT db.id.Year, db.id.Department, db.id.Major, (Male+ Female+Other) AS major_sum FROM db.Gender INNER JOIN db.id ON db.id.ID = db.Gender.ID ;"
     cursor.execute(get_gender_sum)
     get_gender_sum_json = dictfetchall(cursor)
     all_department_gender_sum_year = "SELECT a.Department, a.Year, SUM(a.major_sum) as total\
-            FROM (SELECT db5.id.Year, db5.id.Department, db5.id.Major, (Male+ Female+Other) AS major_sum FROM db5.Gender INNER JOIN db5.id ON db5.id.ID = db5.Gender.ID ) a \
+            FROM (SELECT db.id.Year, db.id.Department, db.id.Major, (Male+ Female+Other) AS major_sum FROM db.Gender INNER JOIN db.id ON db.id.ID = db.Gender.ID ) a \
             GROUP BY a.Department, a.Year;"
     cursor.execute(all_department_gender_sum_year)
     all_department_gender_sum_year_json = dictfetchall(cursor)
@@ -125,7 +125,7 @@ def executeScriptsFromFile(filename):
     #         print "Command skipped: ", msg
 
 if __name__ == '__main__':
-    db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', db = 'db5')
+    db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', db = 'db')
     cursor = db.cursor()
 
     app.run(debug=True)
