@@ -11,14 +11,14 @@ from matplotlib.pyplot import *
 from numpy.random import normal
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
-#from scipy.optimize import curve_fit
+from scipy.optimize import curve_fit
 #from scipy import stats
 
 
 
 
 def f(x, m, b):
-    return a*x+b
+    return m*x+b
     
 def func(x, a, b, c, d):
     return a * np.sin(b*x + c) + d
@@ -75,34 +75,35 @@ def main():
         year = majInf[:,0] #x
         val = majInf[:,1] #y
         # Encapsulate our test data
-        df = pd.DataFrame({'x': year, 'y': val})
+        #df = pd.DataFrame({'x': year, 'y': val})
 
         # Implement simple regression: Result ~ Input
         # First we fit slope and intercept
-        result = smf.ols(formula='y ~ x', data=df).fit()
-        ax = sns.regplot('x', 'y', df, fit_reg=False, color='blue')
+        #result = smf.ols(formula='y ~ x', data=df).fit()
+        #ax = sns.regplot('x', 'y', df, fit_reg=False, color='blue')
 
         # We pick 100 hundred points equally spaced from the min to the max
-        xfpd = pd.DataFrame({'xfpd': np.linspace(0, 1, 50)})
+        #xfpd = pd.DataFrame({'xfpd': np.linspace(0, 1, 50)})
 
-        yfi = result.predict(xfpd)
+        #yfi = result.predict(xfpd)
 
-        plt.plot(xfpd['xfpd'], yfi, color='red', label='y = mx + b')
+        #plt.plot(xfpd['xfpd'], yfi, color='red', label='y = mx + b')
 
-        ax.set(xlabel='X', ylabel='Y', title='Regression Comparison')
-        ax.legend(loc=4)
-        sns.despine(offset=0, trim=True)
-        plt.show()
-       
-        #A = np.array([1+0*year, year]).T
-        #Q,R = np.linalg.qr(A,"complete")
-        #M=np.vander(year)
-        #m,n=A.shape
-        #x = np.linalg.solve_triangular(R[:n], Q.T.dot(valuse)[:n],lower = False)
-        #a_c,b_c = x
-        #plt.plot(year,val,'o')
-        #plt.plot(x, func(x, *parameter), 'b-', label='fit')
+        #ax.set(xlabel='X', ylabel='Y', title='Regression Comparison')
+        #ax.legend(loc=4)
+        #sns.despine(offset=0, trim=True)
         #plt.show()
+       
+        A = np.array([1+0*year, year]).T
+        Q,R = np.linalg.qr(A,"complete")
+        M=np.vander(year)
+        m,n=A.shape
+        x = scipy.linalg.solve_triangular(R[:n], Q.T.dot(val)[:n],lower = False)
+        a_c,b_c = x
+        plt.plot(year,val,'o')
+        pltgrid = np.linspace(400,2000,50)
+        plt.plot(pltgrid, f(pltgrid, b_c, a_c),'b-', label='fit')
+        plt.show()  
         
         #coefficients = np.polyfit(year, val, 6)
         #polynomial = np.poly1d(coefficients)
@@ -116,8 +117,8 @@ def main():
         #plt.plot(year, f(year, slope, intercept),'b-', label = 'fit')
         #plt.show()
 
-        #parameter, covariance_matrix = curve_fit(func, year, val)
 
+        #parameter, covariance_matrix = curve_fit(func, year, val)
         #x = np.linspace(min(year), max(year), 1000)
         #plt.plot(year, val, 'rx', label='data')
         #plt.plot(x, func(x, *parameter), 'b-', label='fit')   # the star is to unpack the parameter array
