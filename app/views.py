@@ -163,6 +163,13 @@ def upload():
                     executeScriptsFromFile(sql_file)
                 else:
                     print "file does not exist"
+            elif "update" in filename.lower():
+                python_command = "python " + "update_year.py" + " " + filename
+                os.system(python_command)
+                file_split = filename.split('.')
+                sql_file = file_split[0] + ".sql"
+                print sql_file
+                executeScriptsFromFile(sql_file)
             else:
                 python_command = "python " + "file_parser.py" + " " + filename
                 os.system(python_command)
