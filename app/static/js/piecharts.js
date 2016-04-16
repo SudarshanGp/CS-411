@@ -6,6 +6,7 @@ var major = "Computer Science";
 var department_pie_viz = null;
 var major_pie_viz = null;
 var ethinicity_data = "";
+var ethinicity_line_viz = null;
 
 function department_pie(data) {
     department_data = data;
@@ -69,7 +70,13 @@ function major_pie(data) {
 		"enabled": true,
 		"type": "placeholder",
 		"string": "{label}: {value}, {percentage}%"
-	    }
+	    },
+        callbacks: {
+            onClickSegment: function (data) {
+                major = data['data']['label'];
+                ethinicity_line(ethinicity_data);
+            }
+        },
     });
 
 }
@@ -107,6 +114,7 @@ function set_slider() {
 
 function ethinicity_line(ethinicity) {
     ethinicity_data = ethinicity;
+
     
 // Mike Bostock "margin conventions"
     var margin = {top: 20, right: 20, bottom: 30, left: 40},
@@ -130,21 +138,19 @@ function ethinicity_line(ethinicity) {
     var yAxis = d3.svg.axis()
         .scale(y)
         .orient("left");
-// create an SVG element (appended to body)
-// set size
-// add a "g" element (think "group")
-// annoying d3 gotcha - the 'svg' variable here is a 'g' element
-// the final line sets the transform on <g>, not on <svg>
+
     var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
 
-    return "<strong>Frequency:</strong> <span style='color:red'>" + d.value + "</span>";
+    return "<strong>" + d.label + " : " + " </strong> <span style='color:whitesmoke'>" + d.value + "</span>";
   });
+    d3.select("#ethinicity_line").remove();
     var svg = d3.select("#ethnicity").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
+        .attr("id", "ethinicity_line")
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     svg.append("g")
