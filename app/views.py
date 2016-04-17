@@ -222,7 +222,7 @@ def regress():
 @app.route('/trends', methods=['GET','POST'])
 def trends():
     data = regress()
-    return render_template('trends.html')
+    return render_template('trends.html', data = data)
 
 
 
