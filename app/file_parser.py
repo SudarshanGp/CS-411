@@ -98,7 +98,7 @@ def FilePar(fileloc, datb):
     cursor.execute(check) # for ID
     exist = cursor.fetchall()
     if len(exist) > 0:
-    	check="SELECT COUNT(*) FROM "+datb+".id;"
+    	check="SELECT max(ID) FROM "+datb+".id;"
     	cursor.execute(check) # for ID
     	counter = cursor.fetchall()
     	counter = int(counter[0][0])
@@ -161,12 +161,6 @@ def FilePar(fileloc, datb):
 						Residency[j][0]+=current_sheet.cell(i,23).value
 					if(type(current_sheet.cell(i,24).value) is float):
 						Residency[j][1]+=current_sheet.cell(i,24).value
-					if j ==61:
-						print i
-						print maj
-						print dep-1
-						print Departmentlist[dep-1]
-						print Department[Departmentlist[dep-1]][maj]
 				else:
 					Gender[tempc]=[0,0,0]
 					Ethnicity[tempc]=[0,0,0,0,0,0,0,0,0]
@@ -202,13 +196,6 @@ def FilePar(fileloc, datb):
 						Residency[j][0]+=current_sheet.cell(i,23).value
 					if(type(current_sheet.cell(i,24).value) is float):
 						Residency[j][1]+=current_sheet.cell(i,24).value
-
-					if j ==61:
-						print i
-						print maj
-						print dep-1
-						print Departmentlist[dep-1]
-						print Department[Departmentlist[dep-1]][maj]
 
     return Department,Gender,Ethnicity,Residency, retCounter
 
