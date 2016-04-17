@@ -193,9 +193,10 @@ def regress():
             # print("YES")
 
     data = pd.DataFrame(regression_data)
-    CS = data[data['Major'].str.contains("Agricultural & Biological Engr") ]
+    CS = data[data['Major'].str.contains("Agricultural Engineering") ]
     cs_eng = CS[CS['Department'].str.contains("Engineering")]
     cs_eng = cs_eng.sort(columns = ["Year"])
+    print(cs_eng)
     X = np.array(cs_eng['Year'].tolist())
     Y = cs_eng['Male'].tolist()
     year = np.array(X)
@@ -216,7 +217,7 @@ def regress():
         return_json.append({'symbol':'Real', 'date' : X[i], 'Enrollment' : Y[i]})
     for i in range(len(new_x)):
         return_json.append({'symbol': 'Predicted', 'date': new_x[i], 'Enrollment': new_y[i]})
-
+    pprint.pprint(return_json)
     return return_json
 
 @app.route('/trends', methods=['GET','POST'])

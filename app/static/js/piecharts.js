@@ -445,7 +445,7 @@ var line = d3.svg.line()
 
   // Compute the minimum and maximum date, and the maximum price.
   x.domain([msft[0].date, msft[msft.length - 1].date]);
-  y.domain([0, d3.max(values, function(d) { return d.Enrollment; })]).nice();
+  y.domain([Math.min(d3.min(msft, function(d) { return d.Enrollment; }), d3.min(values, function(d) { return d.Enrollment; })), Math.max(d3.max(msft, function(d) { return d.Enrollment; }),d3.max(values, function(d) { return d.Enrollment; }) )]).nice();
 
   // Add an SVG element with the desired dimensions and margin.
   var svg = d3.select("#trends").append('svg')
@@ -487,6 +487,7 @@ var line = d3.svg.line()
         .attr('d', function(d) {
           return line(d);
         })
+        .attr("data-legend",function(d) { return d.symbol});
 
   /* Add 'curtain' rectangle to hide entire graph */
   var curtain = svg.append('rect')
@@ -523,18 +524,23 @@ var line = d3.svg.line()
   t.select('rect.curtain')
     .attr('width', 0);
   t.select('line.guide')
-    .attr('transform', 'translate(' + width + ', 0)')
+    .attr('transform', 'translate(' + width + ', 0)');
 
   d3.select("#show_guideline").on("change", function(e) {
     guideline.attr('stroke-width', this.checked ? 1 : 0);
     curtain.attr("opacity", this.checked ? 0.75 : 1);
   });
+    legend = svg.append("g")
+        .attr("class","legend")
+        .attr("transform","translate(50,30)")
+        .style("font-size","12px")
+        .call(d3.legend);
 
+    setTimeout(function() {
+    legend
+      .style("font-size","20px")
+      .attr("data-style-padding",10)
+      .call(d3.legend)
+  },1000);
 
-// Parse dates and numbers. We assume values are sorted by date.
-function type(d) {
-
-    console.log(d);
-  return d;
-}
 }
