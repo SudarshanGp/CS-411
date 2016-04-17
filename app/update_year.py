@@ -46,7 +46,7 @@ def FilePar(fileloc, datb):
     cursor.execute(check) # for ID
     exist = cursor.fetchall()
     if len(exist) > 0:
-    	check="SELECT COUNT(*) FROM "+datb+".id;"
+    	check="SELECT min(ID) FROM "+datb+".id WHERE "+datb+".id.Year = '"+sys.argv[1][:-4]+"';"
     	cursor.execute(check) # for ID
     	counter = cursor.fetchall()
     	counter = int(counter[0][0])
@@ -115,7 +115,7 @@ def FilePar(fileloc, datb):
 					Residency[tempc]=[0,0]
     return Department,Gender,Ethnicity,Residency, retCounter
 
-def writeUpdate(file_name, db_name, list, insType, first):
+def writeUpdate(file_name, db_name, list, insType, defList, first):
     if first == True:
         f = open(file_name, "w")
     else:
@@ -126,17 +126,32 @@ def writeUpdate(file_name, db_name, list, insType, first):
         f.write(db_name)
         f.write(".")
         f.write(insType)
-        f.write(" VALUES(")
+        f.write(" SET '")
+        f.write(defList[0])
+        f.write("'= '"+str(i[0])+"'")
+        for j in range(1,len(i)):
+            f.write(", '")
+            f.write(defList[j])
+            f.write("'= ")
+            f.write(str(i[j]))
+        f.write(" WHERE ")
+        f.write(db_name)
+        f.write(".")
+        f.write(insType)
+        f.write(".ID = ")
         f.write("'")
         f.write(str(i[0]))
-        f.write("',")
-        temp = i[1:]
-        f.write(",".join(str(j) for j in temp))
+        f.write("'")
         f.write(");\n")
     f.close()
 
 def main():
-    dbName = "db5"
+    dbName = "db"
+
+    idTable = ["ID", "Year", "Department", "Major"]
+    ethTable = ["ID", "White", "Asian", "AfAm", "Hisp", "NativeAmAl", "NativeHaw", "Multi", "Foreigner", "Other"]
+    genTable = ["ID", "Male", "Female", "Other"]
+    resTable = ["ID", "IL", "NonIL"]
 
     fileloc=CurrentDir+str(sys.argv[1])
     file_name = "update"+str(sys.argv[1])[:-4]+".sql"
@@ -188,13 +203,13 @@ def main():
     	temp.append(Residency[key][1])
     	res.append(temp)
 
-    writeUpdate(file_name, dbName, ids, "id", first)
+    writeUpdate(file_name, dbName, ids, "id", idTable, first)
     first = False;
-    writeUpdate(file_name, dbName, gen, "Gender", first)
+    writeUpdate(file_name, dbName, gen, "Gender", genTable, first)
 
-    writeUpdate(file_name, dbName, eth, "Ethnicity", first)
+    writeUpdate(file_name, dbName, eth, "Ethnicity", ethTable, first)
 
-    writeUpdate(file_name, dbName, res, "Residency", first)
+    writeUpdate(file_name, dbName, res, "Residency", resTable, first)
 
 if __name__ == '__main__':
     #main()
