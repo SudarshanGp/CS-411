@@ -8,24 +8,7 @@ import sys  #getting sys arguments
 import os #for getting cwd
 import pymysql
 
-db_name = 'Demo.db'
 CurrentDir= os.getcwd()+"/static/res/"
-cursor = ""
-# /Users/Aadhya/GitHub
-def locInDict(dict, dept, majval):
-	count = 0
-	locList = 0
-	for key in dict:
-		if key != dept:
-			count += len(key)
-		else:
-			for val in dict[key]:
-				if val==majval:
-					return dict[key][majval], locList
-				count += 1
-				locList += 1
-		locList = 0
-	return count, locList
 
 def FilePar(fileloc, datb):
 
@@ -37,9 +20,8 @@ def FilePar(fileloc, datb):
 	wb=xlrd.open_workbook(fileloc)
 	current_sheet=wb.sheet_by_index(0)
 
-	retCounter=0
+	counter=0
 	dep = 0
-	counter = 0
 	db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', db = 'db')
 	cursor = db.cursor()
 	check="SHOW DATABASES LIKE '"+datb+"';"
@@ -50,9 +32,9 @@ def FilePar(fileloc, datb):
 		check="SELECT min(ID) FROM "+datb+".id WHERE "+datb+".id.Year = '"+term[:-4]+"';"
 		cursor.execute(check) # for ID
 		counter = cursor.fetchall()
+		if counter[0][0] is None:
+			return Department,Gender,Ethnicity,Residency
 		counter = int(counter[0][0])
-		retCounter = counter
-	counterlist=[]
 
 	for i in range(1, current_sheet.nrows):
 		if(i>11):
@@ -146,7 +128,7 @@ def FilePar(fileloc, datb):
 						Residency[j][0]+=current_sheet.cell(i,23).value
 					if(type(current_sheet.cell(i,24).value) is float):
 						Residency[j][1]+=current_sheet.cell(i,24).value
-	return Department,Gender,Ethnicity,Residency, retCounter
+	return Department,Gender,Ethnicity,Residency
 
 def writeUpdate(file_name, db_name, list, insType, defList, first):
 	if first == True:
@@ -191,7 +173,7 @@ def main():
 
 	first = True;
 
-	Department, Gender, Ethnicity, Residency, count = FilePar(fileloc, dbName)
+	Department, Gender, Ethnicity, Residency = FilePar(fileloc, dbName)
 	ids = []
 	gen = []
 	eth = []
@@ -206,7 +188,6 @@ def main():
 			temp.append(key)
 			temp.append(val)
 			ids.append(temp)
-			count += 1
 
 	for key in Gender:
 		temp=[]
