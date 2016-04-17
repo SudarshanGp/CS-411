@@ -6,6 +6,7 @@
         major_pie({{  pie_major_data | safe}});
         set_slider();
         ethinicity_line({{ ethinicity_data | safe }});
+        gender_line({{ gender_data | safe }});
     });
     </script>
     <div class = "container">
@@ -14,7 +15,7 @@
             </div>
         </div>
         <div class="row year center">
-            <h3 id = "year_data"><strong>fa04</strong></h3>
+            <h3 id = "year_data"><strong>Fall 2004</strong></h3>
         </div>
     </div>
         <div class = "row">
@@ -36,10 +37,18 @@
             </div>
         </div>
         <div class = "row" style = "margin-left: 60px;">
-            <div class="row year center">
-                    <h4 id = "ethinicity_data"><strong>Ethnicity for Computer Science</strong></h4>
+            <div class = "col s6 center">
+                <div class="row year center">
+                        <h4 id = "ethinicity_data"><strong>Ethnicity for Computer Science</strong></h4>
                 </div>
-            <div id = "ethnicity" class="center-align"></div>
+                <div id = "ethnicity" class="center-align"></div>
+            </div>
+            <div class = "col s6 center">
+                <div class="row year center">
+                        <h4 id = "gender_data"><strong>Gender for Computer Science</strong></h4>
+                </div>
+                <div id = "gender" class="center-align"></div>
+            </div>
         </div>
 
 {% endblock %}
