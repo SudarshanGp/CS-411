@@ -413,7 +413,9 @@ var margin = {top: 80, right: 80, bottom: 80, left: 80},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-
+var ordinal = d3.scale.ordinal()
+  .domain(["Actual Enrollment", "Predicted Regression Enrollment"])
+  .range([ "rgb(31,119,180)", "rgb(255, 127, 14)"]);
 // Scales and axes. Note the inverted domain for the y-scale: bigger is up!
 var x = d3.time.scale().range([0, width]),
     y = d3.scale.linear().range([height, 0]),
@@ -473,6 +475,20 @@ var line = d3.svg.line()
       .attr("transform", "translate(" + width + ",0)")
       .call(yAxis);
 
+svg.append("g")
+  .attr("class", "legendOrdinal")
+  .attr("transform", "translate(20,20)");
+
+var legendOrdinal = d3.legend.color()
+  //d3 symbol creates a path-string, for example
+  //"M0,-8.059274488676564L9.306048591020996,
+  //8.059274488676564 -9.306048591020996,8.059274488676564Z"
+  .shape("path", d3.svg.symbol().type("triangle-up").size(150)())
+  .shapePadding(10)
+  .scale(ordinal);
+
+svg.select(".legendOrdinal")
+  .call(legendOrdinal);
 
   var colors = d3.scale.category10();
   svg.selectAll('.line')
@@ -530,17 +546,5 @@ var line = d3.svg.line()
     guideline.attr('stroke-width', this.checked ? 1 : 0);
     curtain.attr("opacity", this.checked ? 0.75 : 1);
   });
-    legend = svg.append("g")
-        .attr("class","legend")
-        .attr("transform","translate(50,30)")
-        .style("font-size","12px")
-        .call(d3.legend);
-
-    setTimeout(function() {
-    legend
-      .style("font-size","20px")
-      .attr("data-style-padding",10)
-      .call(d3.legend)
-  },1000);
 
 }
