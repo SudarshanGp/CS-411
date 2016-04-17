@@ -3,7 +3,16 @@
     <script>
     $( document ).ready(function() {
         generate_trends({{data | safe}});
+        generate_tree({{ tree_data | safe }});
+
     });
     </script>
-    <div id = "trends"></div>
+    <div class = "row">
+        <div class="col s2 left">
+            <div id = "tree"></div>
+        </div>
+         <div class="col s10 left">
+            <div id = "trends"></div>
+         </div>
+    </div>
 {% endblock %}

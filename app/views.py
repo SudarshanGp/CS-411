@@ -184,26 +184,23 @@ def regress():
         # print(key)
         if value['Year'][:2] in "fa":
             # Fall
-            # print(value['Year'])
             year = int('20' + value['Year'][2:4])
-
             temp_dict = value
             temp_dict['Year'] = int(year)
             regression_data.append(temp_dict)
-            # print("YES")
 
     data = pd.DataFrame(regression_data)
-    CS = data[data['Major'].str.contains("Agricultural Engineering") ]
+    CS = data[data['Major'].str.contains("Computer Science") ]
     cs_eng = CS[CS['Department'].str.contains("Engineering")]
     cs_eng = cs_eng.sort(columns = ["Year"])
     print(cs_eng)
     X = np.array(cs_eng['Year'].tolist())
-    Y = cs_eng['Male'].tolist()
+    Y = cs_eng['Female'].tolist()
     year = np.array(X)
     val = np.array(Y)
     A = np.array([1+0*year, year]).T
-    Q,R = np.linalg.qr(A,"complete")
-    m,n=A.shape
+    Q, R = np.linalg.qr(A,"complete")
+    m, n = A.shape
 
     if np.shape(Q.T.dot(val)[:n]) == (2,):
         x = linalg.solve_triangular(R[:n], Q.T.dot(val)[:n],lower = False)
@@ -217,14 +214,33 @@ def regress():
         return_json.append({'symbol':'Real', 'date' : X[i], 'Enrollment' : Y[i]})
     for i in range(len(new_x)):
         return_json.append({'symbol': 'Predicted', 'date': new_x[i], 'Enrollment': new_y[i]})
-    pprint.pprint(return_json)
+    # pprint.pprint(return_json)
     return return_json
 
-@app.route('/trends', methods=['GET','POST'])
+
+@app.route('/trends/', methods=['GET','POST'])
 def trends():
     data = regress()
-    return render_template('trends.html', data = data)
+    get_departments_names = "SELECT DISTINCT Department from db.id;"
+    cursor.execute(get_departments_names)
+    get_department_names_json = dictfetchall(cursor)
+    tree_data = []
+    for key, value in enumerate(get_department_names_json):
+        tree_data.append({'label' : value['Department'], 'children' : []})
+    get_department_majors = "SELECT DISTINCT Department, Major from db.id;"
+    cursor.execute(get_department_majors)
+    get_department_majors_json = dictfetchall(cursor)
+    for key, value in enumerate(get_department_majors_json):
+        match_index = next(index for (index, d) in enumerate(tree_data) if d["label"] == value['Department'])
+        tree_data[match_index]['children'].append({'label': value['Major']})
+    pprint.pprint(tree_data)
 
+    pprint.pprint(get_department_names_json)
+
+    # for key, value in enumerate(get_department_majors_json):
+
+
+    return render_template('trends.html', data = data, tree_data = tree_data)
 
 
 @app.route('/upload', methods=['GET','POST'])
