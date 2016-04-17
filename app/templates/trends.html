@@ -1,0 +1,9 @@
+{%  extends "base.html" %}
+{% block data %}
+    <script>
+    $( document ).ready(function() {
+        generate_trends({{data | safe}});
+    });
+    </script>
+    <div id = "trends"></div>
+{% endblock %}
