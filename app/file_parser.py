@@ -83,9 +83,9 @@ def FilePar(fileloc, datb, term):
 		check="SELECT COUNT(*) FROM "+datb+".id WHERE "+datb+".id.Year = '"+term+"';"
 		cursor.execute(check) # for ID
 		counter = cursor.fetchall()
-		if not(counter == 0):
+		if counter == 0:
 			return Department,Gender,Ethnicity,Residency
-			
+
 		check="SELECT max(ID) FROM "+datb+".id;"
 		cursor.execute(check) # for ID
 		counter = cursor.fetchall()

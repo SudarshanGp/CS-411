@@ -177,6 +177,7 @@ def upload():
             print filename
             file_split = filename.split('.')
             sql_file = file_split[0] + ".sql"
+            
             if "update" in filename.lower():
                 python_command = "python " + "update_year.py" + " " + filename
                 os.system(python_command)
@@ -184,6 +185,15 @@ def upload():
                 sql_file = file_split[0] + ".sql"
                 print sql_file
                 executeScriptsFromFile(sql_file)
+
+            elif "enr" in filename.lower():
+                python_command = "python " + "standing_year.py" + " " + filename
+                os.system(python_command)
+                file_split = filename.split('.')
+                sql_file = file_split[0] + ".sql"
+                print sql_file
+                executeScriptsFromFile(sql_file)
+           
             else:
                 python_command = "python " + "file_parser.py" + " " + filename
                 os.system(python_command)
@@ -209,6 +219,10 @@ def uploaded_file(filename):
 
 def executeScriptsFromFile(filename):
     # Open and read the file as a single buffer
+    fd = open(filename, "a")
+    fd.write("SELECT * FROM db.id WHERE db.id.Year = 'emptylol';")
+    fd.close()
+
     fd = open(filename, 'r')
     sqlFile = fd.read()
     fd.close()
