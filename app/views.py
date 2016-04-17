@@ -177,12 +177,7 @@ def upload():
             print filename
             file_split = filename.split('.')
             sql_file = file_split[0] + ".sql"
-            if "rm" in filename.lower():
-                if os.path.isfile(sql_file):
-                    executeScriptsFromFile(sql_file)
-                else:
-                    print "file does not exist"
-            elif "update" in filename.lower():
+            if "update" in filename.lower():
                 python_command = "python " + "update_year.py" + " " + filename
                 os.system(python_command)
                 file_split = filename.split('.')
@@ -197,8 +192,14 @@ def upload():
                 print sql_file
                 executeScriptsFromFile(sql_file)
             return redirect(url_for('dashboard'))
+        elif request.form['filedel'] != '':
+            file_split = request.form['filedel'].split('.')
+            sql_file = "rm" + file_split[0] + ".sql"
+            if os.path.isfile(sql_file):
+                executeScriptsFromFile(sql_file)
+            return redirect(url_for('dashboard'))
         else:
-            return render_template('upload.html', message = "File not able to upload")
+            return render_template('upload.html', message = "Incorrect Input")
     return render_template('upload.html', message = "No file uploaded")
 
 @app.route('/uploads/<filename>')
