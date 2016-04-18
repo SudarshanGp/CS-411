@@ -1,13 +1,15 @@
-var gender_data = null;
+var gender_data  = "";
 
 function generate_trends(data_in, department, major, gender){
-    console.log(data_in);
-    gender_data = data_in;
-    var data = data_in[department][major][gender];
-    console.log(data);
+    
+    if(!gender_data) {
+        gender_data = (JSON.parse(JSON.stringify(data_in)));
+    }
+
+    var data = (JSON.parse(JSON.stringify(gender_data[department][major][gender])))
+        // gender_data[department][major][gender];
     var parse = d3.time.format("%Y").parse;
     for (var i = 0; i < data.length;i++){
-        console.log(data[i].date);
         data[i].date = parse(data[i].date.toString());
     }
 
@@ -161,13 +163,13 @@ function generate_tree(data) {
     'tree.click',
         function(event) {
             // The clicked node is 'event.node'
-            var gender = event.node.name;
-            var major = event.node.parent.name;
-            var department = event.node.parent.parent.name;
-            d3.select("#trend_id").remove();
-            generate_trends(gender_data, department, major, gender);
-            console.log(major);
-            console.log(department);
+            if(event.node.name == 'Male' || event.node.name == 'Female') {
+                var gender = event.node.name;
+                var major = event.node.parent.name;
+                var department = event.node.parent.parent.name;
+                d3.select("#trend_id").remove();
+                generate_trends(gender_data, department, major, gender);
+            }
         }
     );
 }
