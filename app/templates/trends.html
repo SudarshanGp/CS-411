@@ -2,7 +2,7 @@
 {% block data %}
     <script>
     $( document ).ready(function() {
-        generate_trends({{data | safe}});
+        generate_trends({{data | safe}}, "Engineering", "Computer Science", "Male");
         generate_tree({{ tree_data | safe }});
 
     });
@@ -12,7 +12,12 @@
             <div id = "tree"></div>
         </div>
          <div class="col s10 left">
-            <div id = "trends"></div>
+             <div class = "row">
+
+             </div>
+             <div class = "row">
+                 <div id = "trends"></div>
+             </div>
          </div>
     </div>
 {% endblock %}

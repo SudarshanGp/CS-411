@@ -1,13 +1,16 @@
+var gender_data = null;
 
-
-function generate_trends(data){
+function generate_trends(data_in, department, major, gender){
+    console.log(data_in);
+    gender_data = data_in;
+    var data = data_in[department][major][gender];
     console.log(data);
     var parse = d3.time.format("%Y").parse;
     for (var i = 0; i < data.length;i++){
         console.log(data[i].date);
         data[i].date = parse(data[i].date.toString());
     }
-    console.log(data);
+
 var margin = {top: 80, right: 80, bottom: 80, left: 80},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
@@ -50,6 +53,7 @@ var line = d3.svg.line()
 
   // Add an SVG element with the desired dimensions and margin.
   var svg = d3.select("#trends").append('svg')
+      .attr("id", "trend_id")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -149,7 +153,7 @@ svg.select(".legendOrdinal")
 }
 
 function generate_tree(data) {
-    
+
     $('#tree').tree({
         data: data
     });
@@ -157,8 +161,13 @@ function generate_tree(data) {
     'tree.click',
         function(event) {
             // The clicked node is 'event.node'
-            var node = event.node;
-            alert(node.name);
+            var gender = event.node.name;
+            var major = event.node.parent.name;
+            var department = event.node.parent.parent.name;
+            d3.select("#trend_id").remove();
+            generate_trends(gender_data, department, major, gender);
+            console.log(major);
+            console.log(department);
         }
     );
 }

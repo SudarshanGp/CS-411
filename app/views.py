@@ -20,7 +20,8 @@ db  = ""
 cursor = ""
 render_data = []
 render_data1 = []
-
+all_gender_predictions = {}
+tree_data = []
 
 def f(x, m, b):
     return m*x+b
@@ -175,27 +176,17 @@ def dashboard():
     return render_template('dashboard.html', pie_department_data = department_dict, pie_major_data = major_dict, ethinicity_data = ethinicity_dict, gender_data = gender_dict)
 
 
-def regress():
-    get_gender_all_years = "SELECT db.id.Year, db.id.Department, db.id.Major, Male, Female, Other FROM db.Gender INNER JOIN db.id ON db.id.ID = db.Gender.ID ;"
-    cursor.execute(get_gender_all_years)
-    get_gender_all_years_json = dictfetchall(cursor)
-    regression_data = []
-    for key, value in enumerate(get_gender_all_years_json):
-        # print(key)
-        if value['Year'][:2] in "fa":
-            # Fall
-            year = int('20' + value['Year'][2:4])
-            temp_dict = value
-            temp_dict['Year'] = int(year)
-            regression_data.append(temp_dict)
+def regress(data, major, department, gender):
 
-    data = pd.DataFrame(regression_data)
-    CS = data[data['Major'].str.contains("Computer Science") ]
-    cs_eng = CS[CS['Department'].str.contains("Engineering")]
+    CS = data[data['Major'].str.contains(major) ]
+    cs_eng = CS[CS['Department'].str.contains(department)]
     cs_eng = cs_eng.sort(columns = ["Year"])
-    print(cs_eng)
+    # print(cs_eng)
+    if cs_eng.empty:
+        print(major, department, gender)
+        return []
     X = np.array(cs_eng['Year'].tolist())
-    Y = cs_eng['Female'].tolist()
+    Y = cs_eng[gender].tolist()
     year = np.array(X)
     val = np.array(Y)
     A = np.array([1+0*year, year]).T
@@ -209,38 +200,23 @@ def regress():
         new_y=f(pltgrid, b_c, a_c)
         new_x=pltgrid
 
-    return_json = []
-    for i in range(len(X)):
-        return_json.append({'symbol':'Real', 'date' : X[i], 'Enrollment' : Y[i]})
-    for i in range(len(new_x)):
-        return_json.append({'symbol': 'Predicted', 'date': new_x[i], 'Enrollment': new_y[i]})
-    # pprint.pprint(return_json)
-    return return_json
+        return_json = []
+        for i in range(len(X)):
+            return_json.append({'symbol':'Real', 'date' : X[i], 'Enrollment' : Y[i]})
+        for i in range(len(new_x)):
+            return_json.append({'symbol': 'Predicted', 'date': new_x[i], 'Enrollment': new_y[i]})
+        # pprint.pprint(return_json)
+        return return_json
+    else:
+        print(major, department, gender)
+        return []
 
 
 @app.route('/trends/', methods=['GET','POST'])
 def trends():
-    data = regress()
-    get_departments_names = "SELECT DISTINCT Department from db.id;"
-    cursor.execute(get_departments_names)
-    get_department_names_json = dictfetchall(cursor)
-    tree_data = []
-    for key, value in enumerate(get_department_names_json):
-        tree_data.append({'label' : value['Department'], 'children' : []})
-    get_department_majors = "SELECT DISTINCT Department, Major from db.id;"
-    cursor.execute(get_department_majors)
-    get_department_majors_json = dictfetchall(cursor)
-    for key, value in enumerate(get_department_majors_json):
-        match_index = next(index for (index, d) in enumerate(tree_data) if d["label"] == value['Department'])
-        tree_data[match_index]['children'].append({'label': value['Major']})
-    pprint.pprint(tree_data)
-
-    pprint.pprint(get_department_names_json)
-
-    # for key, value in enumerate(get_department_majors_json):
-
-
-    return render_template('trends.html', data = data, tree_data = tree_data)
+    global all_gender_predictions
+    global tree_data
+    return render_template('trends.html', data = all_gender_predictions, tree_data = tree_data)
 
 
 @app.route('/upload', methods=['GET','POST'])
@@ -288,10 +264,12 @@ def upload():
             return render_template('upload.html', message = "Incorrect Input")
     return render_template('upload.html', message = "No file uploaded")
 
+
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
+
 
 def executeScriptsFromFile(filename):
     # Open and read the file as a single buffer
@@ -306,8 +284,53 @@ def executeScriptsFromFile(filename):
     db.commit()
 
 
+def preprocess():
+    global all_gender_predictions
+    global tree_data
+    get_gender_all_years = "SELECT db.id.Year, db.id.Department, db.id.Major, Male, Female, Other FROM db.Gender INNER JOIN db.id ON db.id.ID = db.Gender.ID ;"
+    cursor.execute(get_gender_all_years)
+    get_gender_all_years_json = dictfetchall(cursor)
+    regression_data = []
+    for key, value in enumerate(get_gender_all_years_json):
+        # print(key)
+        if value['Year'][:2] in "fa":
+            # Fall
+            year = int('20' + value['Year'][2:4])
+            temp_dict = value
+            temp_dict['Year'] = int(year)
+            regression_data.append(temp_dict)
+    data_gender = pd.DataFrame(regression_data)
+    get_departments_names = "SELECT DISTINCT Department from db.id;"
+    cursor.execute(get_departments_names)
+    get_department_names_json = dictfetchall(cursor)
+    for key, value in enumerate(get_department_names_json):
+        tree_data.append({'label': value['Department'], 'children': []})
+    get_department_majors = "SELECT DISTINCT Department, Major from db.id;"
+    cursor.execute(get_department_majors)
+    get_department_majors_json = dictfetchall(cursor)
+    for key, value in enumerate(get_department_majors_json):
+        match_index = next(index for (index, d) in enumerate(tree_data) if d["label"] == value['Department'])
+        tree_data[match_index]['children'].append({'label': value['Major'], 'children' : [{'label': 'Male'}, {'label': 'Female'}]})
+    # pprint.pprint(tree_data)
+
+    for key, value in enumerate(tree_data):
+        department = value['label']
+        for key1, value1 in enumerate(value['children']):
+            major = value1['label']
+            temp_data_female = regress(data_gender, major, department, "Female")
+            temp_data_male = regress(data_gender, major, department, "Male")
+            if len(temp_data_female) == 0 or len(temp_data_male) == 0:
+                continue
+            else:
+                if department in all_gender_predictions.keys():
+                    all_gender_predictions[department][major] = {'Female': temp_data_female, 'Male': temp_data_male}
+                else:
+                    all_gender_predictions[department] = {}
+                    all_gender_predictions[department][major] = {'Female': temp_data_female, 'Male': temp_data_male}
+
+
 if __name__ == '__main__':
     db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', db = 'db')
     cursor = db.cursor()
-
+    preprocess()
     app.run(debug=True, host = '0.0.0.0')
