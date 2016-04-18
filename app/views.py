@@ -21,7 +21,9 @@ cursor = ""
 render_data = []
 render_data1 = []
 all_gender_predictions = {}
+all_eth_predictions = {}
 tree_data = []
+tree_data_eth = []
 
 def f(x, m, b):
     return m*x+b
@@ -219,6 +221,12 @@ def trends():
     global tree_data
     return render_template('trends.html', data = all_gender_predictions, tree_data = tree_data)
 
+@app.route('/trendsEth/', methods=['GET','POST'])
+def trendsEth():
+    global all_eth_predictions
+    global tree_data_eth
+    return render_template('trendsEth.html', data = all_eth_predictions, tree_data = tree_data_eth)
+
 
 @app.route('/upload', methods=['GET','POST'])
 def upload():
@@ -284,6 +292,53 @@ def executeScriptsFromFile(filename):
     cursor.execute(sqlFile)
     db.commit()
 
+def preprocessEth():
+    global all_eth_predictions
+    global tree_data_eth
+    get_gender_all_years = "SELECT db.id.Year, db.id.Department, db.id.Major, White, Asian, AfAm, Hisp, NativeAmAl, NativeHaw, Multi, Foreigner, Other FROM db.Ethnicity INNER JOIN db.id ON db.id.ID = db.Ethnicity.ID ;"
+    cursor.execute(get_gender_all_years)
+    get_gender_all_years_json = dictfetchall(cursor)
+    regression_data = []
+    for key, value in enumerate(get_gender_all_years_json):
+        # print(key)
+        if value['Year'][:2] in "fa":
+            # Fall
+            year = int('20' + value['Year'][2:4])
+            temp_dict = value
+            temp_dict['Year'] = int(year)
+            regression_data.append(temp_dict)
+    data_gender = pd.DataFrame(regression_data)
+    get_departments_names = "SELECT DISTINCT Department from db.id;"
+    cursor.execute(get_departments_names)
+    get_department_names_json = dictfetchall(cursor)
+    for key, value in enumerate(get_department_names_json):
+        tree_data_eth.append({'label': value['Department'], 'children': []})
+    get_department_majors = "SELECT DISTINCT Department, Major from db.id;"
+    cursor.execute(get_department_majors)
+    get_department_majors_json = dictfetchall(cursor)
+    for key, value in enumerate(get_department_majors_json):
+        match_index = next(index for (index, d) in enumerate(tree_data_eth) if d["label"] == value['Department'])
+        tree_data_eth[match_index]['children'].append({'label': value['Major'], 'children' : [{'label': 'White'}, {'label': 'Asian'}, {'label': 'AfAm' }, {'label': 'Hisp'}, {'label': 'NativeAmAl'}, {'label': 'Foreigner'}]})
+    # pprint.pprint(tree_data)
+
+    for key, value in enumerate(tree_data_eth):
+        department = value['label']
+        for key1, value1 in enumerate(value['children']):
+            major = value1['label']
+            temp_data_white = regress(data_gender, major, department, "White")
+            temp_data_asian = regress(data_gender, major, department, "Asian")
+            temp_data_afam = regress(data_gender, major, department, "AfAm")
+            temp_data_hisp = regress(data_gender, major, department, "Hisp")
+            temp_data_amal = regress(data_gender, major, department, "NativeAmAl")
+            temp_data_for = regress(data_gender, major, department, "Foreigner")
+            if len(temp_data_white) == 0 or len(temp_data_asian) == 0 or len(temp_data_afam) == 0 or len(temp_data_hisp) == 0 or len(temp_data_amal) == 0 or len(temp_data_for) == 0:
+                continue
+            else:
+                if department in all_eth_predictions.keys():
+                    all_eth_predictions[department][major] = {'White': temp_data_white, 'Asian': temp_data_asian, 'AfAm': temp_data_afam, 'Hisp': temp_data_hisp, 'NativeAmAl': temp_data_amal, 'Foreigner': temp_data_for}
+                else:
+                    all_eth_predictions[department] = {}
+                    all_eth_predictions[department][major] = {'White': temp_data_white, 'Asian': temp_data_asian, 'AfAm': temp_data_afam, 'Hisp': temp_data_hisp, 'NativeAmAl': temp_data_amal, 'Foreigner': temp_data_for}
 
 def preprocess():
     global all_gender_predictions
@@ -334,4 +389,5 @@ if __name__ == '__main__':
     db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', db = 'db')
     cursor = db.cursor()
     preprocess()
+    preprocessEth()
     app.run(debug=True, host = '0.0.0.0')
