@@ -180,12 +180,12 @@ def regress(data, major, department, gender):
 
     CS = data[data['Major'].str.contains(major) ]
     cs_eng = CS[CS['Department'].str.contains(department)]
-    print(cs_eng)
-    cs_eng = cs_eng.sort(columns = ["Year"])
     # print(cs_eng)
     if cs_eng.empty:
         print(major, department, gender)
         return []
+    cs_eng = cs_eng.sort(columns = ["Year"])
+
     X = np.array(cs_eng['Year'].tolist())
     Y = cs_eng[gender].tolist()
     year = np.array(X)
