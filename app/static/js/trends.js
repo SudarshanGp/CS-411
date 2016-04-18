@@ -1,7 +1,7 @@
 var gender_data  = "";
 
 function generate_trends(data_in, department, major, gender){
-    
+    document.getElementById('trend_data').innerText = "Regression Analysis for " + department + ", " + major + ", " + gender;
     if(!gender_data) {
         gender_data = (JSON.parse(JSON.stringify(data_in)));
     }
