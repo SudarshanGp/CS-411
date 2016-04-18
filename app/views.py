@@ -318,7 +318,7 @@ def preprocessEth():
     get_department_majors_json = dictfetchall(cursor)
     for key, value in enumerate(get_department_majors_json):
         match_index = next(index for (index, d) in enumerate(tree_data_eth) if d["label"] == value['Department'])
-        tree_data_eth[match_index]['children'].append({'label': value['Major'], 'children' : [{'label': 'White'}, {'label': 'Asian'}, {'label': 'AfAm' }, {'label': 'Hisp'}, {'label': 'NativeAmAl'}, {'label': 'Foreigner'}]})
+        tree_data_eth[match_index]['children'].append({'label': value['Major'], 'children' : [{'label': 'White'}, {'label': 'Asian'}, {'label': 'African American' }, {'label': 'Hispanic'}, {'label': 'Native American'}, {'label': 'Foreigner'}]})
     # pprint.pprint(tree_data)
 
     for key, value in enumerate(tree_data_eth):
@@ -335,10 +335,10 @@ def preprocessEth():
                 continue
             else:
                 if department in all_eth_predictions.keys():
-                    all_eth_predictions[department][major] = {'White': temp_data_white, 'Asian': temp_data_asian, 'AfAm': temp_data_afam, 'Hisp': temp_data_hisp, 'NativeAmAl': temp_data_amal, 'Foreigner': temp_data_for}
+                    all_eth_predictions[department][major] = {'White': temp_data_white, 'Asian': temp_data_asian, 'African American': temp_data_afam, 'Hispanic': temp_data_hisp, 'Native American': temp_data_amal, 'Foreigner': temp_data_for}
                 else:
                     all_eth_predictions[department] = {}
-                    all_eth_predictions[department][major] = {'White': temp_data_white, 'Asian': temp_data_asian, 'AfAm': temp_data_afam, 'Hisp': temp_data_hisp, 'NativeAmAl': temp_data_amal, 'Foreigner': temp_data_for}
+                    all_eth_predictions[department][major] = {'White': temp_data_white, 'Asian': temp_data_asian, 'African': temp_data_afam, 'Hispanic': temp_data_hisp, 'Native American': temp_data_amal, 'Foreigner': temp_data_for}
 
 def preprocess():
     global all_gender_predictions
