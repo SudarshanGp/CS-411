@@ -100,6 +100,14 @@ function set_slider() {
                 year = 'fa' + value.toString().split('.')[0].slice(-2);
                 if (department_data[year] === undefined) {
                     document.getElementById('year_data').innerText = "YEAR NOT FOUND : " + year;
+                    document.getElementById('department_data').innerText = "";
+                    document.getElementById('pie').innerText = "";
+                    document.getElementById('pie1').innerText = "";
+                    document.getElementById('ethinicity_data').innerText = "";
+                    document.getElementById('ethnicity').innerText = "";
+                    document.getElementById('gender_data').innerText = "";
+                    document.getElementById('major_data').innerText = "";
+                    document.getElementById('gender').innerText = "";
                 }
                 else {
 
