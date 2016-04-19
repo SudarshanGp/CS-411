@@ -22,6 +22,8 @@ render_data = []
 render_data1 = []
 all_gender_predictions = {}
 all_eth_predictions = {}
+all_rank_predictions = {}
+tree_data_rank = []
 tree_data = []
 tree_data_eth = []
 
@@ -227,6 +229,11 @@ def trendsEth():
     global tree_data_eth
     return render_template('trendsEth.html', data = all_eth_predictions, tree_data = tree_data_eth)
 
+@app.route('/trendsStand/', methods=['GET','POST'])
+def trendsStand():
+    global all_rank_predictions
+    global tree_data_rank
+    return render_template('trendsStand.html', data = all_rank_predictions, tree_data = tree_data_rank)
 
 @app.route('/upload', methods=['GET','POST'])
 def upload():
@@ -248,7 +255,7 @@ def upload():
                 executeScriptsFromFile(sql_file)
 
             elif "enr" in filename.lower():
-                python_command = "python " + "standing_year.py" + " " + filename
+                python_command = "python " + "standing_parser.py" + " " + filename
                 os.system(python_command)
                 file_split = filename.split('.')
                 sql_file = file_split[0] + ".sql"
@@ -291,6 +298,53 @@ def executeScriptsFromFile(filename):
     fd.close()
     cursor.execute(sqlFile)
     db.commit()
+
+def preprocessRank():
+    global all_rank_predictions
+    global tree_data_rank
+    get_gender_all_years = "SELECT db.id.Year, db.id.Department, db.id.Major, Freshman, Sophomore, Junior, Senior, Graduate FROM db.Rank INNER JOIN db.id ON db.id.ID = db.Rank.ID ;"
+    cursor.execute(get_gender_all_years)
+    get_gender_all_years_json = dictfetchall(cursor)
+    regression_data = []
+    for key, value in enumerate(get_gender_all_years_json):
+        # print(key)
+        if value['Year'][:2] in "fa":
+            # Fall
+            year = int('20' + value['Year'][2:4])
+            temp_dict = value
+            temp_dict['Year'] = int(year)
+            regression_data.append(temp_dict)
+    data_gender = pd.DataFrame(regression_data)
+    get_departments_names = "SELECT DISTINCT Department from db.id;"
+    cursor.execute(get_departments_names)
+    get_department_names_json = dictfetchall(cursor)
+    for key, value in enumerate(get_department_names_json):
+        tree_data_rank.append({'label': value['Department'], 'children': []})
+    get_department_majors = "SELECT DISTINCT Department, Major from db.id;"
+    cursor.execute(get_department_majors)
+    get_department_majors_json = dictfetchall(cursor)
+    for key, value in enumerate(get_department_majors_json):
+        match_index = next(index for (index, d) in enumerate(tree_data_rank) if d["label"] == value['Department'])
+        tree_data_rank[match_index]['children'].append({'label': value['Major'], 'children' : [{'label': 'Freshman'}, {'label': 'Sophomore'}, {'label': 'Junior' }, {'label': 'Senior'}, {'label': 'Graduate'}]})
+    # pprint.pprint(tree_data)
+
+    for key, value in enumerate(tree_data_rank):
+        department = value['label']
+        for key1, value1 in enumerate(value['children']):
+            major = value1['label']
+            temp_data_white = regress(data_gender, major, department, "Freshman")
+            temp_data_asian = regress(data_gender, major, department, "Sophomore")
+            temp_data_afam = regress(data_gender, major, department, "Junior")
+            temp_data_hisp = regress(data_gender, major, department, "Senior")
+            temp_data_amal = regress(data_gender, major, department, "Graduate")
+            if len(temp_data_white) == 0 or len(temp_data_asian) == 0 or len(temp_data_afam) == 0 or len(temp_data_hisp) == 0 or len(temp_data_amal) == 0:
+                continue
+            else:
+                if department in all_rank_predictions.keys():
+                    all_rank_predictions[department][major] = {'Freshman': temp_data_white, 'Sophomore': temp_data_asian, 'Junior': temp_data_afam, 'Senior': temp_data_hisp, 'Graduate': temp_data_amal}
+                else:
+                    all_rank_predictions[department] = {}
+                    all_rank_predictions[department][major] = {'Freshman': temp_data_white, 'Sophomore': temp_data_asian, 'Junior': temp_data_afam, 'Senior': temp_data_hisp, 'Graduate': temp_data_amal}
 
 def preprocessEth():
     global all_eth_predictions
@@ -338,7 +392,7 @@ def preprocessEth():
                     all_eth_predictions[department][major] = {'White': temp_data_white, 'Asian': temp_data_asian, 'African American': temp_data_afam, 'Hispanic': temp_data_hisp, 'Native American': temp_data_amal, 'Foreigner': temp_data_for}
                 else:
                     all_eth_predictions[department] = {}
-                    all_eth_predictions[department][major] = {'White': temp_data_white, 'Asian': temp_data_asian, 'African': temp_data_afam, 'Hispanic': temp_data_hisp, 'Native American': temp_data_amal, 'Foreigner': temp_data_for}
+                    all_eth_predictions[department][major] = {'White': temp_data_white, 'Asian': temp_data_asian, 'African American': temp_data_afam, 'Hispanic': temp_data_hisp, 'Native American': temp_data_amal, 'Foreigner': temp_data_for}
 
 def preprocess():
     global all_gender_predictions
