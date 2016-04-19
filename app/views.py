@@ -4,7 +4,7 @@ import sys
 from sqlite3 import OperationalError
 
 sys.path.insert(2, '/usr/local/lib/python2.7/site-packages')
-from flask import Flask, render_template, request, jsonify,send_from_directory, redirect, url_for
+from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for
 import pymysql, json
 import itertools
 import pprint
@@ -13,10 +13,11 @@ import pandas as pd
 import os
 import scipy
 from scipy import linalg
+
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
-db  = ""
+db = ""
 cursor = ""
 render_data = []
 render_data1 = []
@@ -27,8 +28,9 @@ tree_data_rank = []
 tree_data = []
 tree_data_eth = []
 
+
 def f(x, m, b):
-    return m*x+b
+    return m * x + b
 
 
 def dictfetchall(cursor):
@@ -48,9 +50,10 @@ def index():
     """
     # print(render_data)
 
-    return render_template('base.html', data =render_data)
+    return render_template('base.html', data=render_data)
 
-@app.route('/dashboard', methods = ['GET','POST'])
+
+@app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     if request.method == 'POST':
         file = request.files['file']
@@ -79,8 +82,8 @@ def dashboard():
         if value['Year'] in ethinicity_dict.keys():
             # if value['Department'] in ethinicity_dict[value['Year']]:
             temp_list = []
-            temp_list.append({'label' : 'African American', 'value' : value['AfAm']})
-            temp_list.append({'label' : 'Asian', 'value' : value['Asian']})
+            temp_list.append({'label': 'African American', 'value': value['AfAm']})
+            temp_list.append({'label': 'Asian', 'value': value['Asian']})
             temp_list.append({'label': 'Multi Racial', 'value': value['Multi']})
 
             temp_list.append({'label': 'Foreigner', 'value': value['Foreigner']})
@@ -133,7 +136,7 @@ def dashboard():
             temp_list.append({'label': 'Other', 'value': value['Other']})
             gender_dict[value['Year']][value['Department']][value['Major']] = temp_list
 
-    major_dict = {} # Enrollment by Major
+    major_dict = {}  # Enrollment by Major
     for key, value in enumerate(get_gender_sum_json):
         if value['Year'] in major_dict.keys():
             if value['Department'] in major_dict[value['Year']]:
@@ -156,11 +159,10 @@ def dashboard():
             temp_dict['label'] = value['Major']
             temp_dict['value'] = value['major_sum']
             temp_list.append(temp_dict)
-            major_dict[value['Year']] = {value['Department'] :temp_list }
+            major_dict[value['Year']] = {value['Department']: temp_list}
             # major_dict[value['Year']] = temp_list
 
-
-    department_dict = {} # Enrollment by department
+    department_dict = {}  # Enrollment by department
     for key, value in enumerate(all_department_gender_sum_year_json):
         if value['Year'] in department_dict.keys():
             curr_list = department_dict[value['Year']]
@@ -177,81 +179,79 @@ def dashboard():
             temp_list.append(temp)
             department_dict[value['Year']] = temp_list
 
-    return render_template('dashboard.html', pie_department_data = department_dict, pie_major_data = major_dict, ethinicity_data = ethinicity_dict, gender_data = gender_dict)
+    return render_template('dashboard.html', pie_department_data=department_dict, pie_major_data=major_dict,
+                           ethinicity_data=ethinicity_dict, gender_data=gender_dict)
 
 
 def regress(data, major, department, gender):
-
-    CS = data[data['Major'].str.contains(major) ]
+    CS = data[data['Major'].str.contains(major)]
     cs_eng = CS[CS['Department'].str.contains(department)]
-    # print(cs_eng)
     if cs_eng.empty:
-        print(major, department, gender)
         return []
-    cs_eng = cs_eng.sort(columns = ["Year"])
+    cs_eng = cs_eng.sort(columns=["Year"])
 
     X = np.array(cs_eng['Year'].tolist())
     Y = cs_eng[gender].tolist()
     year = np.array(X)
     val = np.array(Y)
-    A = np.array([1+0*year, year]).T
-    Q, R = np.linalg.qr(A,"complete")
+    A = np.array([1 + 0 * year, year]).T
+    Q, R = np.linalg.qr(A, "complete")
     m, n = A.shape
 
     if np.shape(Q.T.dot(val)[:n]) == (2,):
-        x = linalg.solve_triangular(R[:n], Q.T.dot(val)[:n],lower = False)
-        a_c,b_c = x
+        x = linalg.solve_triangular(R[:n], Q.T.dot(val)[:n], lower=False)
+        a_c, b_c = x
         pltgrid = np.array(range(2004, 2021))
-        new_y=f(pltgrid, b_c, a_c)
-        new_x=pltgrid
+        new_y = f(pltgrid, b_c, a_c)
+        new_x = pltgrid
 
         return_json = []
         for i in range(len(X)):
-            return_json.append({'symbol':'Real', 'date' : X[i], 'Enrollment' : Y[i]})
+            return_json.append({'symbol': 'Real', 'date': X[i], 'Enrollment': Y[i]})
         for i in range(len(new_x)):
             return_json.append({'symbol': 'Predicted', 'date': new_x[i], 'Enrollment': new_y[i]})
         # pprint.pprint(return_json)
         return return_json
     else:
-        print(major, department, gender)
         return []
 
 
-@app.route('/trends/', methods=['GET','POST'])
+@app.route('/trends/', methods=['GET', 'POST'])
 def trends():
     global all_gender_predictions
     global tree_data
-    return render_template('trends.html', data = all_gender_predictions, tree_data = tree_data)
+    return render_template('trends.html', data=all_gender_predictions, tree_data=tree_data)
 
-@app.route('/trendsEth/', methods=['GET','POST'])
+
+@app.route('/trendsEth/', methods=['GET', 'POST'])
 def trendsEth():
     global all_eth_predictions
     global tree_data_eth
-    return render_template('trendsEth.html', data = all_eth_predictions, tree_data = tree_data_eth)
+    return render_template('trendsEth.html', data=all_eth_predictions, tree_data=tree_data_eth)
 
-@app.route('/trendsStand/', methods=['GET','POST'])
+
+@app.route('/trendsStand/', methods=['GET', 'POST'])
 def trendsStand():
     global all_rank_predictions
     global tree_data_rank
-    return render_template('trendsStand.html', data = all_rank_predictions, tree_data = tree_data_rank)
+    return render_template('trendsStand.html', data=all_rank_predictions, tree_data=tree_data_rank)
 
-@app.route('/upload', methods=['GET','POST'])
+
+@app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
         file = request.files['file']
         if file:
             filename = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            print filename
             file_split = filename.split('.')
             sql_file = file_split[0] + ".sql"
-            
+
             if "update" in filename.lower():
                 python_command = "python " + "update_year.py" + " " + filename
                 os.system(python_command)
                 file_split = filename.split('.')
                 sql_file = file_split[0] + ".sql"
-                print sql_file
                 executeScriptsFromFile(sql_file)
 
             elif "enr" in filename.lower():
@@ -259,15 +259,13 @@ def upload():
                 os.system(python_command)
                 file_split = filename.split('.')
                 sql_file = file_split[0] + ".sql"
-                print sql_file
                 executeScriptsFromFile(sql_file)
-           
+
             else:
                 python_command = "python " + "file_parser.py" + " " + filename
                 os.system(python_command)
                 file_split = filename.split('.')
                 sql_file = file_split[0] + ".sql"
-                print sql_file
                 executeScriptsFromFile(sql_file)
             return redirect(url_for('dashboard'))
         elif request.form['filedel'] != '':
@@ -277,8 +275,8 @@ def upload():
                 executeScriptsFromFile(sql_file)
             return redirect(url_for('dashboard'))
         else:
-            return render_template('upload.html', message = "Incorrect Input")
-    return render_template('upload.html', message = "No file uploaded")
+            return render_template('upload.html', message="Incorrect Input")
+    return render_template('upload.html', message="No file uploaded")
 
 
 @app.route('/uploads/<filename>')
@@ -299,6 +297,7 @@ def executeScriptsFromFile(filename):
     cursor.execute(sqlFile)
     db.commit()
 
+
 def preprocessRank():
     global all_rank_predictions
     global tree_data_rank
@@ -307,7 +306,6 @@ def preprocessRank():
     get_gender_all_years_json = dictfetchall(cursor)
     regression_data = []
     for key, value in enumerate(get_gender_all_years_json):
-        # print(key)
         if value['Year'][:2] in "fa":
             # Fall
             year = int('20' + value['Year'][2:4])
@@ -325,8 +323,10 @@ def preprocessRank():
     get_department_majors_json = dictfetchall(cursor)
     for key, value in enumerate(get_department_majors_json):
         match_index = next(index for (index, d) in enumerate(tree_data_rank) if d["label"] == value['Department'])
-        tree_data_rank[match_index]['children'].append({'label': value['Major'], 'children' : [{'label': 'Freshman'}, {'label': 'Sophomore'}, {'label': 'Junior' }, {'label': 'Senior'}, {'label': 'Graduate'}]})
-    # pprint.pprint(tree_data)
+        tree_data_rank[match_index]['children'].append({'label': value['Major'],
+                                                        'children': [{'label': 'Freshman'}, {'label': 'Sophomore'},
+                                                                     {'label': 'Junior'}, {'label': 'Senior'},
+                                                                     {'label': 'Graduate'}]})
 
     for key, value in enumerate(tree_data_rank):
         department = value['label']
@@ -337,14 +337,20 @@ def preprocessRank():
             temp_data_afam = regress(data_gender, major, department, "Junior")
             temp_data_hisp = regress(data_gender, major, department, "Senior")
             temp_data_amal = regress(data_gender, major, department, "Graduate")
-            if len(temp_data_white) == 0 or len(temp_data_asian) == 0 or len(temp_data_afam) == 0 or len(temp_data_hisp) == 0 or len(temp_data_amal) == 0:
+            if len(temp_data_white) == 0 or len(temp_data_asian) == 0 or len(temp_data_afam) == 0 or len(
+                    temp_data_hisp) == 0 or len(temp_data_amal) == 0:
                 continue
             else:
                 if department in all_rank_predictions.keys():
-                    all_rank_predictions[department][major] = {'Freshman': temp_data_white, 'Sophomore': temp_data_asian, 'Junior': temp_data_afam, 'Senior': temp_data_hisp, 'Graduate': temp_data_amal}
+                    all_rank_predictions[department][major] = {'Freshman': temp_data_white,
+                                                               'Sophomore': temp_data_asian, 'Junior': temp_data_afam,
+                                                               'Senior': temp_data_hisp, 'Graduate': temp_data_amal}
                 else:
                     all_rank_predictions[department] = {}
-                    all_rank_predictions[department][major] = {'Freshman': temp_data_white, 'Sophomore': temp_data_asian, 'Junior': temp_data_afam, 'Senior': temp_data_hisp, 'Graduate': temp_data_amal}
+                    all_rank_predictions[department][major] = {'Freshman': temp_data_white,
+                                                               'Sophomore': temp_data_asian, 'Junior': temp_data_afam,
+                                                               'Senior': temp_data_hisp, 'Graduate': temp_data_amal}
+
 
 def preprocessEth():
     global all_eth_predictions
@@ -354,7 +360,6 @@ def preprocessEth():
     get_gender_all_years_json = dictfetchall(cursor)
     regression_data = []
     for key, value in enumerate(get_gender_all_years_json):
-        # print(key)
         if value['Year'][:2] in "fa":
             # Fall
             year = int('20' + value['Year'][2:4])
@@ -372,8 +377,11 @@ def preprocessEth():
     get_department_majors_json = dictfetchall(cursor)
     for key, value in enumerate(get_department_majors_json):
         match_index = next(index for (index, d) in enumerate(tree_data_eth) if d["label"] == value['Department'])
-        tree_data_eth[match_index]['children'].append({'label': value['Major'], 'children' : [{'label': 'White'}, {'label': 'Asian'}, {'label': 'African American' }, {'label': 'Hispanic'}, {'label': 'Native American'}, {'label': 'Foreigner'}]})
-    # pprint.pprint(tree_data)
+        tree_data_eth[match_index]['children'].append({'label': value['Major'],
+                                                       'children': [{'label': 'White'}, {'label': 'Asian'},
+                                                                    {'label': 'African American'},
+                                                                    {'label': 'Hispanic'}, {'label': 'Native American'},
+                                                                    {'label': 'Foreigner'}]})
 
     for key, value in enumerate(tree_data_eth):
         department = value['label']
@@ -385,14 +393,24 @@ def preprocessEth():
             temp_data_hisp = regress(data_gender, major, department, "Hisp")
             temp_data_amal = regress(data_gender, major, department, "NativeAmAl")
             temp_data_for = regress(data_gender, major, department, "Foreigner")
-            if len(temp_data_white) == 0 or len(temp_data_asian) == 0 or len(temp_data_afam) == 0 or len(temp_data_hisp) == 0 or len(temp_data_amal) == 0 or len(temp_data_for) == 0:
+            if len(temp_data_white) == 0 or len(temp_data_asian) == 0 or len(temp_data_afam) == 0 or len(
+                    temp_data_hisp) == 0 or len(temp_data_amal) == 0 or len(temp_data_for) == 0:
                 continue
             else:
                 if department in all_eth_predictions.keys():
-                    all_eth_predictions[department][major] = {'White': temp_data_white, 'Asian': temp_data_asian, 'African American': temp_data_afam, 'Hispanic': temp_data_hisp, 'Native American': temp_data_amal, 'Foreigner': temp_data_for}
+                    all_eth_predictions[department][major] = {'White': temp_data_white, 'Asian': temp_data_asian,
+                                                              'African American': temp_data_afam,
+                                                              'Hispanic': temp_data_hisp,
+                                                              'Native American': temp_data_amal,
+                                                              'Foreigner': temp_data_for}
                 else:
                     all_eth_predictions[department] = {}
-                    all_eth_predictions[department][major] = {'White': temp_data_white, 'Asian': temp_data_asian, 'African American': temp_data_afam, 'Hispanic': temp_data_hisp, 'Native American': temp_data_amal, 'Foreigner': temp_data_for}
+                    all_eth_predictions[department][major] = {'White': temp_data_white, 'Asian': temp_data_asian,
+                                                              'African American': temp_data_afam,
+                                                              'Hispanic': temp_data_hisp,
+                                                              'Native American': temp_data_amal,
+                                                              'Foreigner': temp_data_for}
+
 
 def preprocess():
     global all_gender_predictions
@@ -402,7 +420,6 @@ def preprocess():
     get_gender_all_years_json = dictfetchall(cursor)
     regression_data = []
     for key, value in enumerate(get_gender_all_years_json):
-        # print(key)
         if value['Year'][:2] in "fa":
             # Fall
             year = int('20' + value['Year'][2:4])
@@ -420,8 +437,8 @@ def preprocess():
     get_department_majors_json = dictfetchall(cursor)
     for key, value in enumerate(get_department_majors_json):
         match_index = next(index for (index, d) in enumerate(tree_data) if d["label"] == value['Department'])
-        tree_data[match_index]['children'].append({'label': value['Major'], 'children' : [{'label': 'Male'}, {'label': 'Female'}]})
-    # pprint.pprint(tree_data)
+        tree_data[match_index]['children'].append(
+            {'label': value['Major'], 'children': [{'label': 'Male'}, {'label': 'Female'}]})
 
     for key, value in enumerate(tree_data):
         department = value['label']
@@ -440,8 +457,9 @@ def preprocess():
 
 
 if __name__ == '__main__':
-    db = pymysql.connect(host='162.243.195.102',user='root', passwd ='411Password', db = 'db')
+    db = pymysql.connect(host='162.243.195.102', user='root', passwd='411Password', db='db')
     cursor = db.cursor()
     preprocess()
     preprocessEth()
-    app.run(debug=True, host = '0.0.0.0')
+    preprocessRank()
+    app.run(debug=True, host='0.0.0.0')
