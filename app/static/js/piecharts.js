@@ -99,7 +99,7 @@ function set_slider() {
             if(value % 1 != 0){
                 year = 'fa' + value.toString().split('.')[0].slice(-2);
                 if (department_data[year] === undefined) {
-                    document.getElementById('year_data').innerText = "YEAR NOT FOUND : " + year;
+                    document.getElementById('year_data').innerText = "SEMESTER NOT FOUND : " + year;
                     document.getElementById('department_data').innerText = "";
                     document.getElementById('pie').innerText = "";
                     document.getElementById('pie1').innerText = "";
