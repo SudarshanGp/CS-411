@@ -28,6 +28,9 @@ tree_data_rank = []
 tree_data = []
 tree_data_eth = []
 
+rerenderRank = 1
+rerenderEth = 1
+rerenderGender = 1
 
 def f(x, m, b):
     return m * x + b
@@ -218,7 +221,10 @@ def regress(data, major, department, gender):
 
 @app.route('/trends/', methods=['GET', 'POST'])
 def trends():
-    preprocess()
+    global rerenderGender
+    if rerenderGender == 1:
+        preprocess()
+        rerenderGender=0
     global all_gender_predictions
     global tree_data
     return render_template('trends.html', data=all_gender_predictions, tree_data=tree_data)
@@ -226,7 +232,10 @@ def trends():
 
 @app.route('/trendsEth/', methods=['GET', 'POST'])
 def trendsEth():
-    preprocessEth()
+    global rerenderEth
+    if rerenderEth == 1:
+        preprocessEth()
+        rerenderEth=0
     global all_eth_predictions
     global tree_data_eth
     return render_template('trendsEth.html', data=all_eth_predictions, tree_data=tree_data_eth)
@@ -234,7 +243,10 @@ def trendsEth():
 
 @app.route('/trendsStand/', methods=['GET', 'POST'])
 def trendsStand():
-    preprocessRank()
+    global rerenderRank
+    if rerenderRank==1:
+        preprocessRank()
+        rerenderRank=0
     global all_rank_predictions
     global tree_data_rank
     return render_template('trendsStand.html', data=all_rank_predictions, tree_data=tree_data_rank)
@@ -299,6 +311,9 @@ def executeScriptsFromFile(filename):
     fd.close()
     cursor.execute(sqlFile)
     db.commit()
+    rerenderGender=1
+    rerenderEth=1
+    rerenderRank=1
 
 
 def preprocessRank():
