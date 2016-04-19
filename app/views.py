@@ -302,6 +302,9 @@ def uploaded_file(filename):
 
 def executeScriptsFromFile(filename):
     # Open and read the file as a single buffer
+    global rerenderEth
+    global rerenderGender
+    global rerenderRank
     fd = open(filename, "a")
     fd.write("SELECT * FROM db.id WHERE db.id.Year = 'emptylol';")
     fd.close()
