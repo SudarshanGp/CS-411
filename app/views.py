@@ -28,9 +28,9 @@ tree_data_rank = []
 tree_data = []
 tree_data_eth = []
 
-rerenderRank = 1
-rerenderEth = 1
-rerenderGender = 1
+rerenderRank = 0
+rerenderEth = 0
+rerenderGender = 0
 
 def f(x, m, b):
     return m * x + b
@@ -477,4 +477,7 @@ def preprocess():
 if __name__ == '__main__':
     db = pymysql.connect(host='162.243.195.102', user='root', passwd='411Password', db='db')
     cursor = db.cursor()
-    app.run(debug=True, host='0.0.0.0')
+    preprocess()
+    preprocessEth()
+    preprocessRank()
+    app.run(host='0.0.0.0')
