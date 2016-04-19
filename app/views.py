@@ -218,6 +218,7 @@ def regress(data, major, department, gender):
 
 @app.route('/trends/', methods=['GET', 'POST'])
 def trends():
+    preprocess()
     global all_gender_predictions
     global tree_data
     return render_template('trends.html', data=all_gender_predictions, tree_data=tree_data)
@@ -225,6 +226,7 @@ def trends():
 
 @app.route('/trendsEth/', methods=['GET', 'POST'])
 def trendsEth():
+    preprocessEth()
     global all_eth_predictions
     global tree_data_eth
     return render_template('trendsEth.html', data=all_eth_predictions, tree_data=tree_data_eth)
@@ -232,6 +234,7 @@ def trendsEth():
 
 @app.route('/trendsStand/', methods=['GET', 'POST'])
 def trendsStand():
+    preprocessRank()
     global all_rank_predictions
     global tree_data_rank
     return render_template('trendsStand.html', data=all_rank_predictions, tree_data=tree_data_rank)
@@ -459,7 +462,4 @@ def preprocess():
 if __name__ == '__main__':
     db = pymysql.connect(host='162.243.195.102', user='root', passwd='411Password', db='db')
     cursor = db.cursor()
-    preprocess()
-    preprocessEth()
-    preprocessRank()
     app.run(debug=True, host='0.0.0.0')
